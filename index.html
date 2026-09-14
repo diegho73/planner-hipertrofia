@@ -411,10 +411,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const inputs = document.querySelectorAll("input");
 
-    document.addEventListener("DOMContentLoaded", () => {
-    
-    const inputs = document.querySelectorAll("input");
-
     inputs.forEach((input,index)=>{
 
         const saved =
@@ -496,10 +492,7 @@ function resetData(){
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc
+  getFirestore
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -516,12 +509,10 @@ const db = getFirestore(app);
 
 window.firebaseReady = true;
 
-window.saveToCloud = async function(){
-    console.log("Guardando...");
-};
-
-window.loadFromCloud = async function(){
-    console.log("Cargando...");
-};
+console.log("Firebase conectado");
 
 </script>
+
+</body>
+</html>
+``
