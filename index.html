@@ -375,15 +375,7 @@ th{
 
 <script>
 
-updateProgress()
-
-setTimeout(()=>{
-
-    if(window.firebaseReady){
-        loadFromCloud();
-    }
-
-},1500);
+    document.addEventListener("DOMContentLoaded", () => {
     
     const inputs = document.querySelectorAll("input");
 
@@ -412,19 +404,32 @@ setTimeout(()=>{
                    input.type === "checkbox"
                    ? input.checked
                    : input.value
-);
+               );
 
-if(window.firebaseReady){
-    saveToCloud();
-}
+               if(window.firebaseReady){
+                   saveToCloud();
+               }
+
+               updateProgress();
+            }
+      );
+
+});
 
 updateProgress();
-            }
-        );
 
-    });
+setTimeout(()=>{
 
-    updateProgress();
+    if(window.firebaseReady &&
+       typeof loadFromCloud === "function"){
+
+        loadFromCloud();
+
+    }
+
+},1500);
+
+});
 
 function resetData(){
 
