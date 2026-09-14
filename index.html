@@ -404,7 +404,6 @@ function updateProgress(){
 
     document.getElementById("progressText").textContent =
         percent + "% completado";
-
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -431,35 +430,21 @@ document.addEventListener("DOMContentLoaded", () => {
             : "input",
             () => {
 
-               localStorage.setItem(
-                   "planner_" + index,
-                   input.type === "checkbox"
-                   ? input.checked
-                   : input.value
-               );
+                localStorage.setItem(
+                    "planner_" + index,
+                    input.type === "checkbox"
+                    ? input.checked
+                    : input.value
+                );
 
-               if(window.firebaseReady){
-                   saveToCloud();
-               }
+                updateProgress();
 
-               updateProgress();
             }
-      );
+        );
 
-});
+    });
 
-updateProgress();
-
-setTimeout(()=>{
-
-    if(window.firebaseReady &&
-       typeof loadFromCloud === "function"){
-
-        loadFromCloud();
-
-    }
-
-},1500);
+    updateProgress();
 
 });
 
@@ -485,15 +470,20 @@ function resetData(){
     }
 }
 
-</script>  
-    
+</script>
+
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-  getFirestore
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBZs85wIZSaxlqfdjGyXR-fA4wAD2ApcrQ",
@@ -507,12 +497,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.firebaseReady = true;
-
-console.log("Firebase conectado");
+window.db = db;
+window.doc = doc;
+window.getDoc = getDoc;
+window.setDoc = setDoc;
 
 </script>
-
-</body>
-</html>
-``
