@@ -375,6 +375,44 @@ th{
 
 <script>
 
+    <script>
+
+function updateProgress(){
+
+    const checks = document.querySelectorAll(
+        '.exercise input[type="checkbox"]'
+    );
+
+    const total = checks.length;
+
+    const completed =
+        Array.from(checks)
+        .filter(check => check.checked)
+        .length;
+
+    const percent =
+        total > 0
+        ? Math.round((completed / total) * 100)
+        : 0;
+
+    document.getElementById("completedCount").textContent =
+        completed;
+
+    document.getElementById("totalCount").textContent =
+        total;
+
+    document.getElementById("progressBar").value =
+        percent;
+
+    document.getElementById("progressText").textContent =
+        percent + "% completado";
+
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const inputs = document.querySelectorAll("input");
+
     document.addEventListener("DOMContentLoaded", () => {
     
     const inputs = document.querySelectorAll("input");
