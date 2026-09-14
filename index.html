@@ -489,8 +489,6 @@ function resetData(){
     }
 }
 
-</script>
-
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -514,60 +512,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const plannerRef = doc(db,"planner","principal");
+window.firebaseReady = true;
 
 window.saveToCloud = async function(){
-
-    const data = {};
-
-    document.querySelectorAll("input")
-    .forEach((input,index)=>{
-
-        data[index] =
-            input.type === "checkbox"
-            ? input.checked
-            : input.value;
-
-    });
-
-    await setDoc(
-        plannerRef,
-        {
-            inputs:data,
-            updated:new Date().toISOString()
-        }
-    );
-
+    console.log("Guardando...");
 };
 
 window.loadFromCloud = async function(){
-
-    const snap = await getDoc(plannerRef);
-
-    if(!snap.exists()) return;
-
-    const data = snap.data().inputs || {};
-
-    document.querySelectorAll("input")
-    .forEach((input,index)=>{
-
-        if(data[index] === undefined)
-            return;
-
-        if(input.type === "checkbox"){
-            input.checked = data[index];
-        }else{
-            input.value = data[index];
-        }
-
-    });
-
-    if(typeof updateProgress === "function"){
-        updateProgress();
-    }
-
+    console.log("Cargando...");
 };
-
-window.firebaseReady = true;
 
 </script>
