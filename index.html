@@ -375,39 +375,16 @@ th{
 
 <script>
 
-function updateProgress(){
+function updateProgress();
 
-    const checks = document.querySelectorAll(
-        '.exercise input[type="checkbox"]'
-    );
+setTimeout(()=>{
 
-    const total = checks.length;
+    if(window.firebaseReady){
+        loadFromCloud();
+    }
 
-    const completed =
-        Array.from(checks)
-        .filter(check => check.checked)
-        .length;
-
-    const percent =
-        total > 0
-        ? Math.round((completed / total) * 100)
-        : 0;
-
-    document.getElementById("completedCount").textContent =
-        completed;
-
-    document.getElementById("totalCount").textContent =
-        total;
-
-    document.getElementById("progressBar").value =
-        percent;
-
-    document.getElementById("progressText").textContent =
-        percent + "% completado";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
+},1500);
+    
     const inputs = document.querySelectorAll("input");
 
     inputs.forEach((input,index)=>{
@@ -430,15 +407,18 @@ document.addEventListener("DOMContentLoaded", () => {
             : "input",
             () => {
 
-                localStorage.setItem(
-                    "planner_" + index,
-                    input.type === "checkbox"
-                    ? input.checked
-                    : input.value
-                );
+               localStorage.setItem(
+                   "planner_" + index,
+                   input.type === "checkbox"
+                   ? input.checked
+                   : input.value
+);
 
-                updateProgress();
+if(window.firebaseReady){
+    saveToCloud();
+}
 
+updateProgress();
             }
         );
 
@@ -474,16 +454,14 @@ function resetData(){
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBZs85wIZSaxlqfdjGyXR-fA4wAD2ApcrQ",
@@ -497,9 +475,60 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.db = db;
-window.doc = doc;
-window.getDoc = getDoc;
-window.setDoc = setDoc;
+const plannerRef = doc(db,"planner","principal");
+
+window.saveToCloud = async function(){
+
+    const data = {};
+
+    document.querySelectorAll("input")
+    .forEach((input,index)=>{
+
+        data[index] =
+            input.type === "checkbox"
+            ? input.checked
+            : input.value;
+
+    });
+
+    await setDoc(
+        plannerRef,
+        {
+            inputs:data,
+            updated:new Date().toISOString()
+        }
+    );
+
+};
+
+window.loadFromCloud = async function(){
+
+    const snap = await getDoc(plannerRef);
+
+    if(!snap.exists()) return;
+
+    const data = snap.data().inputs || {};
+
+    document.querySelectorAll("input")
+    .forEach((input,index)=>{
+
+        if(data[index] === undefined)
+            return;
+
+        if(input.type === "checkbox"){
+            input.checked = data[index];
+        }else{
+            input.value = data[index];
+        }
+
+    });
+
+    if(typeof updateProgress === "function"){
+        updateProgress();
+    }
+
+};
+
+window.firebaseReady = true;
 
 </script>
