@@ -471,3 +471,35 @@ function resetData(){
 }
 
 </script>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBZs85wIZSaxlqfdjGyXR-fA4wAD2ApcrQ",
+  authDomain: "planner-hipertrofia.firebaseapp.com",
+  projectId: "planner-hipertrofia",
+  storageBucket: "planner-hipertrofia.firebasestorage.app",
+  messagingSenderId: "615667446596",
+  appId: "1:615667446596:web:54394f2636a7f664c89d11"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+window.doc = doc;
+window.getDoc = getDoc;
+window.setDoc = setDoc;
+
+</script>
