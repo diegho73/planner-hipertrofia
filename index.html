@@ -510,17 +510,19 @@ async function guardarEnFirebase(){
     const datos = {};
 
     document
-    .querySelectorAll("input")
-    .forEach(input => {
+.querySelectorAll("input")
+.forEach((input,index) => {
 
-        if(!input.id) return;
+    const key =
+        input.id ||
+        "planner_" + index;
 
-        datos[input.id] =
-            input.type === "checkbox"
-            ? input.checked
-            : input.value;
+    datos[key] =
+        input.type === "checkbox"
+        ? input.checked
+        : input.value;
 
-    });
+});
 
     try{
 
@@ -572,24 +574,47 @@ async function cargarDesdeFirebase(){
 
         const datos =
         snap.data().inputs || {};
+Object.keys(datos)
+.forEach(key => {
 
-        Object.keys(datos)
-        .forEach(id => {
+    let campo =
+        document.getElementById(key);
 
-            const campo =
-            document.getElementById(id);
+    if(!campo){
 
-            if(!campo) return;
+        const index =
+            Number(
+                key.replace(
+                    "planner_",
+                    ""
+                )
+            );
 
-            if(campo.type==="checkbox"){
-                campo.checked = datos[id];
-            }else{
-                campo.value = datos[id];
-            }
-
-        });
+        campo =
+            document.querySelectorAll(
+                "input"
+            )[index];
 
     }
+
+    if(!campo) return;
+
+    if(campo.type === "checkbox"){
+
+        campo.checked =
+            datos[key];
+
+    }else{
+
+        campo.value =
+            datos[key];
+
+    }
+
+});
+        
+    }
+        
     catch(error){
 
         console.error(error);
