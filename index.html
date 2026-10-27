@@ -437,6 +437,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     : input.value
                 );
 
+                guardarEnFirebase();
+
                 updateProgress();
 
             }
@@ -501,5 +503,104 @@ window.db = db;
 window.doc = doc;
 window.getDoc = getDoc;
 window.setDoc = setDoc;
+
+async function guardarEnFirebase(){
+
+    const datos = {};
+
+    document
+    .querySelectorAll("input")
+    .forEach(input => {
+
+        if(!input.id) return;
+
+        datos[input.id] =
+            input.type === "checkbox"
+            ? input.checked
+            : input.value;
+
+    });
+
+    try{
+
+        await setDoc(
+            doc(
+                db,
+                "planner",
+                "principal"
+            ),
+            {
+                inputs: datos,
+                actualizado:
+                new Date().toISOString()
+            }
+        );
+
+        console.log(
+            "Datos guardados en Firebase"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Error Firebase:",
+            error
+        );
+
+    }
+
+}
+
+async function cargarDesdeFirebase(){
+
+    try{
+
+        const snap =
+        await getDoc(
+            doc(
+                db,
+                "planner",
+                "principal"
+            )
+        );
+
+        if(!snap.exists()){
+            return;
+        }
+
+        const datos =
+        snap.data().inputs || {};
+
+        Object.keys(datos)
+        .forEach(id => {
+
+            const campo =
+            document.getElementById(id);
+
+            if(!campo) return;
+
+            if(campo.type==="checkbox"){
+                campo.checked = datos[id];
+            }else{
+                campo.value = datos[id];
+            }
+
+        });
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+window.guardarEnFirebase =
+guardarEnFirebase;
+
+window.cargarDesdeFirebase =
+cargarDesdeFirebase;
 
 </script>
