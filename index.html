@@ -603,4 +603,13 @@ guardarEnFirebase;
 window.cargarDesdeFirebase =
 cargarDesdeFirebase;
 
+window.addEventListener("load", async () => {
+    
+    await cargarDesdeFirebase();
+
+    updateProgress();
+
+});
+
+
 </script>
