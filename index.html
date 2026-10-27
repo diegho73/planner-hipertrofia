@@ -483,7 +483,8 @@ import {
     getFirestore,
     doc,
     getDoc,
-    setDoc
+    setDoc,
+    onSnapshot
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -604,12 +605,46 @@ window.cargarDesdeFirebase =
 cargarDesdeFirebase;
 
 window.addEventListener("load", async () => {
-    
+
     await cargarDesdeFirebase();
 
     updateProgress();
 
 });
 
+onSnapshot(
+    doc(db, "planner", "principal"),
+    (snap) => {
+
+        if(!snap.exists()) return;
+
+        const datos =
+            snap.data().inputs || {};
+
+        Object.keys(datos).forEach(id => {
+
+            const campo =
+                document.getElementById(id);
+
+            if(!campo) return;
+
+            if(campo.type === "checkbox"){
+
+                campo.checked =
+                    datos[id];
+
+            }else{
+
+                campo.value =
+                    datos[id];
+
+            }
+
+        });
+
+        updateProgress();
+
+    }
+);
 
 </script>
