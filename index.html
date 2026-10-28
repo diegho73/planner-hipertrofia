@@ -632,17 +632,19 @@ function updateProgress(){
         percent + "%";
 
     const peso =
-    document.getElementById(
-        "pesoActual"
-    );
+        document.getElementById(
+            "pesoActual"
+        );
 
     if(peso){
 
         document.getElementById(
-           "pesoActualCard"
+            "pesoActualCard"
         ).textContent =
-        peso.value || "70";
+            peso.value || "70";
+
     }
+
 }
     
 document.addEventListener("DOMContentLoaded", () => {
