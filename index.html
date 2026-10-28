@@ -100,7 +100,58 @@ h1{
     border:1px solid #4caf50;
 }
 
-.summary{
+.dashboard{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(
+        auto-fit,
+        minmax(180px,1fr)
+    );
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+.kpi{
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    text-align:center;
+
+    border:2px solid #0b2c6b;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,.1);
+
+}
+
+.kpi h3{
+
+    margin:0 0 10px;
+
+    font-size:15px;
+
+}
+
+.kpi span{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    color:#0b2c6b;
+
+}
+    
+    .summary{
     margin:20px 0;
     background:white;
     border:2px solid #0b2c6b;
@@ -248,19 +299,32 @@ th{
 
 </div>
 
+<div class="dashboard">
+
+    <div class="kpi">
+        <h3>✅ Completados</h3>
+        <span id="completedCount">0</span>
+    </div>
+
+    <div class="kpi">
+        <h3>📋 Total</h3>
+        <span id="totalCount">0</span>
+    </div>
+
+    <div class="kpi">
+        <h3>📈 Progreso</h3>
+        <span id="progressText">0%</span>
+    </div>
+
+</div>
+
 <div class="summary">
 
-    <h3>📈 Resumen semanal</h3>
-
-    <p>
-        Ejercicios completados:
-        <strong id="completedCount">0</strong> /
-        <strong id="totalCount">0</strong>
-    </p>
-
-    <progress id="progressBar" value="0" max="100"></progress>
-
-    <p id="progressText">0%</p>
+    <progress
+        id="progressBar"
+        value="0"
+        max="100">
+    </progress>
 
 </div>
 
