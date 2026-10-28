@@ -219,6 +219,44 @@ th{
 
 /* MOBILE */
 
+    .tabs{
+
+    display:flex;
+
+    gap:8px;
+
+    margin-bottom:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.tab-btn{
+
+    flex:1;
+
+    background:#e5e5e5;
+
+    color:#0b2c6b;
+
+    border:2px solid #0b2c6b;
+
+}
+
+.tab-btn.active{
+
+    background:#0b2c6b;
+
+    color:white;
+
+}
+
+.workout-day{
+
+    display:none;
+
+}
+    
 @media (max-width:768px){
 
     body{
@@ -328,11 +366,35 @@ th{
 
 </div>
 
+    <div class="tabs">
+
+    <button class="tab-btn active"
+        onclick="mostrarDia('dia1')">
+        Día 1
+    </button>
+
+    <button class="tab-btn"
+        onclick="mostrarDia('dia2')">
+        Día 2
+    </button>
+
+    <button class="tab-btn"
+        onclick="mostrarDia('dia3')">
+        Día 3
+    </button>
+
+    <button class="tab-btn"
+        onclick="mostrarDia('dia4')">
+        Día 4
+    </button>
+
+</div>
+    
 <!-- DIA 1 -->
 
-<div class="card">
-
-<h2>Día 1 - Superior A</h2>
+<div class="card workout-day"
+     id="dia1">
+<h2>Día 1 - Tren Superior</h2>
 
 <div class="header-row">
 <div></div>
@@ -358,9 +420,10 @@ th{
 
 <!-- DIA 2 -->
 
-<div class="card">
+<div class="card workout-day"
+     id="dia2">
 
-<h2>Día 2 - Inferior A</h2>
+<h2>Día 2 - Tren Inferior</h2>
 
 <div class="header-row">
 <div></div>
@@ -385,9 +448,10 @@ th{
 
 <!-- DIA 3 -->
 
-<div class="card">
+<div class="card workout-day"
+     id="dia3">
 
-<h2>Día 3 - Superior B</h2>
+<h2>Día 3 - Tren Superior</h2>
 
 <div class="header-row">
 <div></div>
@@ -413,9 +477,10 @@ th{
 
 <!-- DIA 4 -->
 
-<div class="card">
+<div class="card workout-day"
+     id="dia4">
 
-<h2>Día 4 - Inferior B</h2>
+<h2>Día 4 - Tren Inferior</h2>
 
 <div class="header-row">
 <div></div>
@@ -538,6 +603,36 @@ function resetData(){
     }
 }
 
+function mostrarDia(id){
+
+    document
+    .querySelectorAll(".workout-day")
+    .forEach(dia => {
+
+        dia.style.display = "none";
+
+    });
+
+    document
+    .getElementById(id)
+    .style.display = "block";
+
+    document
+    .querySelectorAll(".tab-btn")
+    .forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+    document
+    .querySelector(
+        `[onclick="mostrarDia('${id}')"]`
+    )
+    .classList.add("active");
+
+}
+    
 </script>
 
 <script type="module">
