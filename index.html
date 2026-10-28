@@ -259,8 +259,40 @@ th{
     
 @media (max-width:768px){
 
+    .tabs{
+
+        display:grid;
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:8px;
+
+        margin-bottom:15px;
+
+    }
+
+    .tab-btn{
+
+        min-height:55px;
+
+        font-size:15px;
+
+        font-weight:bold;
+
+        padding:10px;
+
+    }
+
+    .workout-day{
+
+        margin-top:10px;
+
+    }
+
     body{
         margin:10px;
+        padding-bottom:30px;
     }
 
     .container{
@@ -279,7 +311,7 @@ th{
         grid-column:2;
         margin-top:5px;
     }
-
+    
     .header-row{
         display:none;
     }
