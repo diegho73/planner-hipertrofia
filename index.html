@@ -92,6 +92,27 @@ h1{
     border-radius:6px;
 }
 
+#pesoActual,
+#pesoObjetivo{
+
+    width:90px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    margin:0 5px;
+
+}
+
+.targets{
+    margin:20px 0;
+    padding:15px;
+    background:#eaf7ea;
+    border-radius:10px;
+    border:1px solid #4caf50;
+}
+
 .targets{
     margin:20px 0;
     padding:15px;
@@ -357,15 +378,43 @@ th{
 </div>
 
 <div class="targets">
+<h3>🎯 Objetivos</h3>
 
-    <h3>🎯 Objetivos</h3>
+<p>
 
-    <p><strong>Peso actual:</strong> 70 kg</p>
-    <p><strong>Objetivo 3 meses:</strong> 73 - 75 kg</p>
-    <p><strong>Objetivo 6 meses:</strong> 76 - 78 kg</p>
-    <p><strong>Proteína:</strong> 112 a 154 g/día</p>
-    <p><strong>Creatina:</strong> 5 g/día</p>
-    <p><strong>Sueño:</strong> 7 a 9 horas</p>
+    <strong>Peso actual:</strong>
+
+    <input
+        type="number"
+        id="pesoActual"
+        step="0.1"
+        value="70"
+        min="40"
+        max="200">
+
+    kg
+
+</p>
+
+<p>
+
+    <strong>Peso objetivo:</strong>
+
+    <input
+        type="number"
+        id="pesoObjetivo"
+        step="0.1"
+        value="75"
+        min="40"
+        max="200">
+
+    kg
+
+</p>
+
+<p><strong>Proteína:</strong> 112 a 154 g/día</p>
+<p><strong>Creatina:</strong> 5 g/día</p>
+<p><strong>Sueño:</strong> 7 a 9 horas</p>
 
 </div>
 
@@ -385,6 +434,11 @@ th{
         <h3>📈 Progreso Semanal</h3>
         <span id="progressText">0</span>
     </div>
+
+    <div class="kpi">
+    <h3>⚖ Peso</h3>
+    <span id="pesoActualCard">70</span>
+</div>
 
 </div>
 
@@ -540,35 +594,57 @@ th{
 
 function updateProgress(){
 
-    const checks = document.querySelectorAll(
-        '.exercise input[type="checkbox"]'
-    );
+    const checks =
+        document.querySelectorAll(
+            'input[type="checkbox"]'
+        );
 
-    const total = checks.length;
+    const checked =
+        document.querySelectorAll(
+            'input[type="checkbox"]:checked'
+        );
 
-    const completed =
-        Array.from(checks)
-        .filter(check => check.checked)
-        .length;
+    document.getElementById(
+        "completedCount"
+    ).textContent =
+        checked.length;
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        checks.length;
 
     const percent =
-        total > 0
-        ? Math.round((completed / total) * 100)
-        : 0;
+        Math.round(
+            checked.length /
+            checks.length *
+            100
+        );
 
-    document.getElementById("completedCount").textContent =
-        completed;
-
-    document.getElementById("totalCount").textContent =
-        total;
-
-    document.getElementById("progressBar").value =
+    document.getElementById(
+        "progressBar"
+    ).value =
         percent;
 
-    document.getElementById("progressText").textContent =
+    document.getElementById(
+        "progressText"
+    ).textContent =
         percent + "%";
-}
 
+    const peso =
+    document.getElementById(
+        "pesoActual"
+    );
+
+if(peso){
+
+    document.getElementById(
+        "pesoActualCard"
+    ).textContent =
+        peso.value || "70";
+
+}
+    
 document.addEventListener("DOMContentLoaded", () => {
 
     const inputs = document.querySelectorAll("input");
