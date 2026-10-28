@@ -491,8 +491,8 @@ th{
 </div>
 </div>
 
-<div class="exercise"><input type="checkbox" id="dia1_check_0"><label for="dia1_check_0">Plancha 3x30-45s</label><div class="exercise-data"><input class="weight" id="dia1_peso_0" placeholder="Peso"><input class="rir" id="dia1_rir_0" placeholder="RIR"></div></div>
-<div class="exercise"><input type="checkbox" id="dia1_check_1"><label for="dia1_check_1">Dead Bug 3x10/lado</label><div class="exercise-data"><input class="weight" id="dia1_peso_1" placeholder="Peso"><input class="rir" id="dia1_rir_1" placeholder="RIR"></div></div>
+<div class="exercise"><input type="checkbox"><label>Plancha 3x30-45s</label><div class="exercise-data"><input class="weight" id="dia1_peso_0" placeholder="Peso"><input class="rir" id="dia1_rir_0" placeholder="RIR"></div></div>
+<div class="exercise"><input type="checkbox"><label>Dead Bug 3x10/lado</label><div class="exercise-data"><input class="weight" id="dia1_peso_1" placeholder="Peso"><input class="rir" id="dia1_rir_1" placeholder="RIR"></div></div>
 <div class="exercise"><input type="checkbox"><label>Pallof Press 3x12/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"><input class="rir" placeholder="RIR"></div></div>
 <div class="exercise"><input type="checkbox"><label>Press banca 4x6-8</label><div class="exercise-data"><input class="weight" placeholder="Peso"><input class="rir" placeholder="RIR"></div></div>
 <div class="exercise"><input type="checkbox"><label>Press inclinado 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"><input class="rir" placeholder="RIR"></div></div>
@@ -843,8 +843,7 @@ async function cargarDesdeFirebase(){
 
         const datos =
         snap.data().inputs || {};
-Object.keys(datos)
-.forEach(key => {
+Object.keys(datos).forEach(key => {
 
     let campo =
         document.getElementById(key);
@@ -954,10 +953,27 @@ onSnapshot(
         const datos =
             snap.data().inputs || {};
 
-        Object.keys(datos).forEach(id => {
+        Object.keys(datos).forEach(key => {
 
-            const campo =
-                document.getElementById(id);
+            let campo =
+                document.getElementById(key);
+
+            if(!campo){
+
+                const index =
+                    Number(
+                        key.replace(
+                            "planner_",
+                            ""
+                        )
+                    );
+
+                campo =
+                    document.querySelectorAll(
+                        "input"
+                    )[index];
+
+            }
 
             if(!campo) return;
 
