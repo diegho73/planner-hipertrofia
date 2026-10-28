@@ -898,6 +898,43 @@ guardarEnFirebase;
 window.cargarDesdeFirebase =
 cargarDesdeFirebase;
 
+window.mostrarDia = function(id){
+
+    document
+    .querySelectorAll(".workout-day")
+    .forEach(dia => {
+
+        dia.style.display = "none";
+
+    });
+
+    document
+    .getElementById(id)
+    .style.display = "block";
+
+    document
+    .querySelectorAll(".tab-btn")
+    .forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+    const boton =
+        document.querySelector(
+            `[onclick="mostrarDia('${id}')"]`
+        );
+
+    if(boton){
+
+        boton.classList.add(
+            "active"
+        );
+
+    }
+
+};
+
 window.addEventListener("load", async () => {
 
     await cargarDesdeFirebase();
