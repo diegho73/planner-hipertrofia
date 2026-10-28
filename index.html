@@ -711,7 +711,7 @@ function resetData(){
     }
 }
 
-function mostrarDia(id){
+window.mostrarDia = function(id){
 
     document
     .querySelectorAll(".workout-day")
@@ -903,6 +903,8 @@ window.addEventListener("load", async () => {
     await cargarDesdeFirebase();
 
     updateProgress();
+
+    mostrarDia("dia1");
 
 });
 
