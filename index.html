@@ -45,10 +45,19 @@ h1{
 }
 
 .header-row{
+
     display:grid;
-    grid-template-columns:30px 1fr 60px;
+
+    grid-template-columns:
+        30px
+        1fr
+        80px
+        70px;
+
     gap:10px;
+
     margin-bottom:10px;
+
 }
 
 .header-row span{
@@ -65,10 +74,10 @@ h1{
     grid-template-columns:
         30px
         1fr
-        70px
-        60px;
+        80px
+        70px;
 
-    gap:8px;
+    gap:10px;
 
     align-items:center;
 
@@ -87,24 +96,29 @@ h1{
 
 .exercise-data{
 
-    display:contents;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
 }
 
 .weight{
-    width:100%;
+
+    width:65px;
+
     height:36px;
-    padding:4px;
-    font-size:14px;
+
+    text-align:center;
+
 }
 
 .series{
 
-    width:70px;
+    width:80px;
 
     height:36px;
-
-    border-radius:6px;
 
     text-align:center;
 
@@ -630,11 +644,15 @@ th{
 <h2>Día 1 - Tren Superior</h2>
 
 <div class="header-row">
-<div></div>
-<div></div>
-<div class="exercise-data">
-<span>Peso</span>
-</div>
+
+    <div></div>
+
+    <div></div>
+
+    <span>Series</span>
+
+    <span>Peso</span>
+
 </div>
 
 <div class="exercise"><input type="checkbox"><label>Plancha 3x30-45s</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
