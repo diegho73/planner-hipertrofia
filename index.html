@@ -580,7 +580,7 @@ th{
 <div class="exercise"><input type="checkbox"><label>Plancha 3x30-45s</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dead Bug 3x10/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Pallof Press 3x12/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Press banca 4x6-8</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
+<div class="exercise"><input type="checkbox"><label onclick="mostrarReemplazos('Press banca')" style="cursor:pointer;color:#0b2c6b;font-weight:bold;">  Press banca 4x6-8  </label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Press inclinado 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dominadas/Jalón 4x6-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Remo barra 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
@@ -675,6 +675,143 @@ th{
 </div>
 
 <script>
+
+    const bibliotecaEjercicios = {
+
+    "Press banca":{
+        grupo:"Pecho",
+        reemplazos:[
+            "Press inclinado",
+            "Press mancuernas",
+            "Fondos",
+            "Press máquina"
+        ]
+    },
+
+    "Press inclinado":{
+        grupo:"Pecho",
+        reemplazos:[
+            "Press banca",
+            "Press inclinado mancuernas",
+            "Aperturas"
+        ]
+    },
+
+    "Dominadas/Jalón":{
+        grupo:"Espalda",
+        reemplazos:[
+            "Dominadas",
+            "Jalón al pecho",
+            "Pulldown máquina"
+        ]
+    },
+
+    "Remo barra":{
+        grupo:"Espalda",
+        reemplazos:[
+            "Remo máquina",
+            "Remo mancuerna",
+            "Remo polea"
+        ]
+    },
+
+    "Press militar":{
+        grupo:"Hombros",
+        reemplazos:[
+            "Press mancuernas",
+            "Arnold Press",
+            "Press máquina"
+        ]
+    },
+
+    "Curl bíceps":{
+        grupo:"Bíceps",
+        reemplazos:[
+            "Curl martillo",
+            "Curl polea",
+            "Curl predicador"
+        ]
+    },
+
+    "Tríceps":{
+        grupo:"Tríceps",
+        reemplazos:[
+            "Tríceps cuerda",
+            "Press francés",
+            "Fondos"
+        ]
+    },
+
+    "Sentadilla":{
+        grupo:"Piernas",
+        reemplazos:[
+            "Prensa",
+            "Hack squat",
+            "Sentadilla goblet"
+        ]
+    },
+
+    "Prensa":{
+        grupo:"Piernas",
+        reemplazos:[
+            "Sentadilla",
+            "Hack squat",
+            "Step up"
+        ]
+    },
+
+    "Peso muerto rumano":{
+        grupo:"Isquios",
+        reemplazos:[
+            "Hip Thrust",
+            "Buenos días",
+            "Pull Through"
+        ]
+    },
+
+    "Peso muerto":{
+        grupo:"Cadena posterior",
+        reemplazos:[
+            "Peso muerto rumano",
+            "Hip Thrust",
+            "Rack Pull"
+        ]
+    },
+
+    "Hip Thrust":{
+        grupo:"Glúteos",
+        reemplazos:[
+            "Puente glúteo",
+            "Peso muerto rumano",
+            "Pull Through"
+        ]
+    },
+
+    "Curl femoral":{
+        grupo:"Isquios",
+        reemplazos:[
+            "Nordic Curl",
+            "Peso muerto rumano"
+        ]
+    },
+
+    "Gemelos":{
+        grupo:"Pantorrillas",
+        reemplazos:[
+            "Gemelos sentado",
+            "Gemelos prensa"
+        ]
+    },
+
+    "Gemelos sentado":{
+        grupo:"Pantorrillas",
+        reemplazos:[
+            "Gemelos de pie",
+            "Gemelos prensa"
+        ]
+    }
+
+};
 
 function updateProgress(){
 
@@ -838,6 +975,37 @@ if(
 
 }    
 window.mostrarDia = function(id){
+
+    function mostrarReemplazos(nombre){
+
+    const ejercicio =
+        bibliotecaEjercicios[nombre];
+
+    if(!ejercicio){
+
+        alert(
+            "No hay reemplazos registrados para este ejercicio"
+        );
+
+        return;
+
+    }
+
+    alert(
+
+        "Ejercicio: " +
+        nombre +
+
+        "\n\nGrupo: " +
+        ejercicio.grupo +
+
+        "\n\nReemplazos:\n\n" +
+
+        ejercicio.reemplazos.join("\n")
+
+    );
+
+}
 
     document
     .querySelectorAll(".workout-day")
