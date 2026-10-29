@@ -89,6 +89,18 @@ h1{
     font-size:14px;
 }
 
+.replace-btn{
+
+    width:40px;
+
+    height:36px;
+
+    padding:0;
+
+    margin-right:5px;
+
+}
+
 #pesoActual,
 #pesoObjetivo{
 
@@ -580,7 +592,25 @@ th{
 <div class="exercise"><input type="checkbox"><label>Plancha 3x30-45s</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dead Bug 3x10/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Pallof Press 3x12/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label <select class="exercise-select"><option>Press banca</option><option>Press inclinado</option><option>Press mancuernas</option><option>Fondos</option><option>Press máquina</option></select> class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
+<div class="exercise">
+
+    <input type="checkbox">
+
+    <label>
+        Press banca 4x6-8
+    </label>
+
+    <button
+        class="replace-btn"
+        onclick="mostrarReemplazos('Press banca')">
+        🔄
+    </button>
+
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
+
+</div>
 <div class="exercise"><input type="checkbox"><label>Press inclinado 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dominadas/Jalón 4x6-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Remo barra 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
