@@ -441,23 +441,44 @@ th{
         25px
         1fr
         60px
-        50px;
+        55px;
 
     }
 
     .exercise-data{
-        grid-column:3;
-        margin-top:0;
+    display:contents;
     }
-
+    
     .weight{
     width:55px;
     text-align:center;
     }
+
+    .series{
+
+    width:60px;
+
+    height:36px;
+
+    text-align:center;
+
+}
     
     .header-row{
-        display:none;
-    }
+
+    display:grid;
+
+    grid-template-columns:
+        30px
+        1fr
+        70px
+        60px;
+
+    gap:8px;
+
+    margin-bottom:10px;
+
+}
 
     .actions{
         display:flex;
