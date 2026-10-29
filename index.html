@@ -580,7 +580,7 @@ th{
 <div class="exercise"><input type="checkbox"><label>Plancha 3x30-45s</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dead Bug 3x10/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Pallof Press 3x12/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label onclick="mostrarReemplazos('Press banca')" style="cursor:pointer;color:#0b2c6b;font-weight:bold;">  Press banca 4x6-8  </label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
+<div class="exercise"><input type="checkbox"><label <select class="exercise-select"><option>Press banca</option><option>Press inclinado</option><option>Press mancuernas</option><option>Fondos</option><option>Press máquina</option></select> class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Press inclinado 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dominadas/Jalón 4x6-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Remo barra 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
@@ -1034,6 +1034,37 @@ window.mostrarDia = function(id){
     );
 
 } 
+
+ function mostrarReemplazos(nombre){
+
+    const ejercicio =
+        bibliotecaEjercicios[nombre];
+
+    if(!ejercicio){
+
+        alert(
+            "No hay reemplazos registrados para este ejercicio"
+        );
+
+        return;
+
+    }
+
+    alert(
+
+        "Ejercicio: " +
+        nombre +
+
+        "\n\nGrupo: " +
+        ejercicio.grupo +
+
+        "\n\nReemplazos:\n\n" +
+
+        ejercicio.reemplazos.join("\n")
+
+    );
+
+}   
     
 </script>
 
