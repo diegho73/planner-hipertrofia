@@ -976,7 +976,35 @@ if(
 }    
 window.mostrarDia = function(id){
 
-    function mostrarReemplazos(nombre){
+     document
+    .querySelectorAll(".workout-day")
+    .forEach(dia => {
+
+        dia.style.display = "none";
+
+    });
+
+    document
+    .getElementById(id)
+    .style.display = "block";
+
+    document
+    .querySelectorAll(".tab-btn")
+    .forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+    document
+    .querySelector(
+        `[onclick="mostrarDia('${id}')"]`
+    )
+    .classList.add("active");
+
+};
+
+   function mostrarReemplazos(nombre){
 
     const ejercicio =
         bibliotecaEjercicios[nombre];
@@ -1005,35 +1033,7 @@ window.mostrarDia = function(id){
 
     );
 
-}
-
-    document
-    .querySelectorAll(".workout-day")
-    .forEach(dia => {
-
-        dia.style.display = "none";
-
-    });
-
-    document
-    .getElementById(id)
-    .style.display = "block";
-
-    document
-    .querySelectorAll(".tab-btn")
-    .forEach(btn => {
-
-        btn.classList.remove("active");
-
-    });
-
-    document
-    .querySelector(
-        `[onclick="mostrarDia('${id}')"]`
-    )
-    .classList.add("active");
-
-};
+} 
     
 </script>
 
