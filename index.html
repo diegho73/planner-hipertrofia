@@ -115,6 +115,8 @@ h1{
 
     height:36px;
 
+    border-radius:6px;
+
     text-align:center;
 
 }
@@ -454,9 +456,15 @@ th{
 
     }
 
-    .exercise-data{
-    display:contents;
-    }
+   .exercise-data{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
     
     .weight{
     width:55px;
@@ -985,6 +993,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+    document
+.querySelectorAll(".exercise")
+.forEach(exercise => {
+
+    const selector =
+        document.createElement("select");
+
+    selector.className = "series";
+
+    selector.innerHTML = `
+        <option>3x6</option>
+        <option>3x8</option>
+        <option>3x10</option>
+        <option>3x12</option>
+        <option>4x6</option>
+        <option selected>4x8</option>
+        <option>4x10</option>
+        <option>4x12</option>
+    `;
+
+    const peso =
+        exercise.querySelector(".exercise-data");
+
+    exercise.insertBefore(
+        selector,
+        peso
+    );
+
+});
+    
 function resetData(){
 
     if(confirm("¿Deseas borrar todos los datos guardados?")){
