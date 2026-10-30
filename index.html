@@ -762,140 +762,124 @@ th{
 
 <script>
 
-    const bibliotecaEjercicios = {
+   const bibliotecaEjercicios = {
 
-    "Press banca":{
-        grupo:"Pecho",
-        reemplazos:[
-            "Press inclinado",
-            "Press mancuernas",
-            "Fondos",
-            "Press máquina"
-        ]
-    },
+    pecho:[
+        "Press banca",
+        "Press inclinado",
+        "Press inclinado barra",
+        "Press inclinado mancuernas",
+        "Press declinado",
+        "Press mancuernas",
+        "Press máquina",
+        "Press convergente",
+        "Fondos",
+        "Aperturas",
+        "Aperturas polea",
+        "Pec Deck",
+        "Flexiones",
+        "Flexiones lastradas"
+    ],
 
-    "Press inclinado":{
-        grupo:"Pecho",
-        reemplazos:[
-            "Press banca",
-            "Press inclinado mancuernas",
-            "Aperturas"
-        ]
-    },
+    espalda:[
+        "Dominadas",
+        "Dominadas supinas",
+        "Jalón al pecho",
+        "Jalón cerrado",
+        "Pulldown",
+        "Remo barra",
+        "Remo T",
+        "Remo mancuerna",
+        "Remo máquina",
+        "Remo polea",
+        "Face Pull",
+        "Pullover polea",
+        "Rack Pull"
+    ],
 
-    "Dominadas/Jalón":{
-        grupo:"Espalda",
-        reemplazos:[
-            "Dominadas",
-            "Jalón al pecho",
-            "Pulldown máquina"
-        ]
-    },
+    hombros:[
+        "Press militar",
+        "Press mancuerna",
+        "Arnold Press",
+        "Press máquina",
+        "Elevaciones laterales",
+        "Elevaciones laterales polea",
+        "Elevaciones frontales",
+        "Elevaciones frontales polea",
+        "Pájaros",
+        "Face Pull"
+    ],
 
-    "Remo barra":{
-        grupo:"Espalda",
-        reemplazos:[
-            "Remo máquina",
-            "Remo mancuerna",
-            "Remo polea"
-        ]
-    },
+    biceps:[
+        "Curl bíceps",
+        "Curl barra",
+        "Curl EZ",
+        "Curl martillo",
+        "Curl polea",
+        "Curl predicador",
+        "Curl concentrado",
+        "Curl inclinado"
+    ],
 
-    "Press militar":{
-        grupo:"Hombros",
-        reemplazos:[
-            "Press mancuernas",
-            "Arnold Press",
-            "Press máquina"
-        ]
-    },
+    triceps:[
+        "Tríceps polea",
+        "Tríceps cuerda",
+        "Press francés",
+        "Fondos",
+        "Patada tríceps",
+        "Extensión polea",
+        "Extensión mancuerna"
+    ],
 
-    "Curl bíceps":{
-        grupo:"Bíceps",
-        reemplazos:[
-            "Curl martillo",
-            "Curl polea",
-            "Curl predicador"
-        ]
-    },
+    cuadriceps:[
+        "Sentadilla",
+        "Sentadilla frontal",
+        "Hack squat",
+        "Prensa",
+        "Goblet squat",
+        "Búlgaras",
+        "Step up",
+        "Cuádriceps máquina"
+    ],
 
-    "Tríceps":{
-        grupo:"Tríceps",
-        reemplazos:[
-            "Tríceps cuerda",
-            "Press francés",
-            "Fondos"
-        ]
-    },
+    isquios:[
+        "Peso muerto rumano",
+        "Peso muerto",
+        "Buenos días",
+        "Curl femoral",
+        "Curl femoral sentado",
+        "Curl femoral acostado",
+        "Nordic Curl"
+    ],
 
-    "Sentadilla":{
-        grupo:"Piernas",
-        reemplazos:[
-            "Prensa",
-            "Hack squat",
-            "Sentadilla goblet"
-        ]
-    },
+    gluteos:[
+        "Hip Thrust",
+        "Puente glúteo",
+        "Pull Through",
+        "Patada glúteo polea",
+        "Abducción máquina"
+    ],
 
-    "Prensa":{
-        grupo:"Piernas",
-        reemplazos:[
-            "Sentadilla",
-            "Hack squat",
-            "Step up"
-        ]
-    },
+    gemelos:[
+        "Gemelos de pie",
+        "Gemelos sentado",
+        "Gemelos prensa",
+        "Gemelos unilateral"
+    ],
 
-    "Peso muerto rumano":{
-        grupo:"Isquios",
-        reemplazos:[
-            "Hip Thrust",
-            "Buenos días",
-            "Pull Through"
-        ]
-    },
-
-    "Peso muerto":{
-        grupo:"Cadena posterior",
-        reemplazos:[
-            "Peso muerto rumano",
-            "Hip Thrust",
-            "Rack Pull"
-        ]
-    },
-
-    "Hip Thrust":{
-        grupo:"Glúteos",
-        reemplazos:[
-            "Puente glúteo",
-            "Peso muerto rumano",
-            "Pull Through"
-        ]
-    },
-
-    "Curl femoral":{
-        grupo:"Isquios",
-        reemplazos:[
-            "Nordic Curl",
-            "Peso muerto rumano"
-        ]
-    },
-
-    "Gemelos":{
-        grupo:"Pantorrillas",
-        reemplazos:[
-            "Gemelos sentado",
-            "Gemelos prensa"
-        ]
-    },
-
-    "Gemelos sentado":{
-        grupo:"Pantorrillas",
-        reemplazos:[
-            "Gemelos de pie",
-            "Gemelos prensa"
-        ]
-    }
+    core:[
+        "Plancha",
+        "Plancha lateral",
+        "Dead Bug",
+        "Bird Dog",
+        "Pallof Press",
+        "Ab Wheel",
+        "Crunch polea",
+        "Crunch inverso",
+        "Rodillas colgado",
+        "Elevaciones piernas",
+        "Mountain Climbers"
+    ]
 
 };
 
@@ -1120,15 +1104,38 @@ window.mostrarDia = function(id){
 
 };
 
-   function mostrarReemplazos(nombre){
+function obtenerReemplazos(nombre){
 
-    const ejercicio =
-        bibliotecaEjercicios[nombre];
+    for(const grupo in bibliotecaEjercicios){
 
-    if(!ejercicio){
+        if(
+            bibliotecaEjercicios[grupo]
+            .includes(nombre)
+        ){
+
+            return bibliotecaEjercicios[grupo]
+            .filter(
+                ejercicio =>
+                ejercicio !== nombre
+            );
+
+        }
+
+    }
+
+    return [];
+
+}
+
+function mostrarReemplazos(nombre){
+
+    const reemplazos =
+        obtenerReemplazos(nombre);
+
+    if(!reemplazos.length){
 
         alert(
-            "No hay reemplazos registrados para este ejercicio"
+            "No se encontraron reemplazos"
         );
 
         return;
@@ -1137,50 +1144,17 @@ window.mostrarDia = function(id){
 
     alert(
 
-        "Ejercicio: " +
+        "Reemplazos para:\n\n" +
+
         nombre +
 
-        "\n\nGrupo: " +
-        ejercicio.grupo +
+        "\n\n" +
 
-        "\n\nReemplazos:\n\n" +
-
-        ejercicio.reemplazos.join("\n")
+        reemplazos.join("\n")
 
     );
 
-} 
-
- function mostrarReemplazos(nombre){
-
-    const ejercicio =
-        bibliotecaEjercicios[nombre];
-
-    if(!ejercicio){
-
-        alert(
-            "No hay reemplazos registrados para este ejercicio"
-        );
-
-        return;
-
-    }
-
-    alert(
-
-        "Ejercicio: " +
-        nombre +
-
-        "\n\nGrupo: " +
-        ejercicio.grupo +
-
-        "\n\nReemplazos:\n\n" +
-
-        ejercicio.reemplazos.join("\n")
-
-    );
-
-}   
+}
     
 </script>
 
