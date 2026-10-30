@@ -126,6 +126,20 @@ h1{
 
 }
 
+    .exercise-select{
+
+    width:100%;
+
+    height:36px;
+
+    border-radius:6px;
+
+    padding:4px;
+
+    font-size:14px;
+
+}
+
 .replace-btn{
 
     width:40px;
@@ -666,7 +680,33 @@ th{
 <div class="exercise"><input type="checkbox"><label>Plancha 3x30-45s</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dead Bug 3x10/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Pallof Press 3x12/lado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Press banca</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
+<div class="exercise">
+
+    <input type="checkbox">
+
+    <select class="exercise-select">
+
+        <option selected>Press banca</option>
+
+        <option>Press inclinado</option>
+        <option>Press inclinado barra</option>
+        <option>Press inclinado mancuernas</option>
+        <option>Press declinado</option>
+        <option>Press mancuernas</option>
+        <option>Press máquina</option>
+        <option>Press convergente</option>
+        <option>Fondos</option>
+        <option>Aperturas</option>
+        <option>Aperturas polea</option>
+        <option>Pec Deck</option>
+
+    </select>
+
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
+
+</div>
 <div class="exercise"><input type="checkbox"><label>Press inclinado 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Dominadas/Jalón 4x6-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
 <div class="exercise"><input type="checkbox"><label>Remo barra 3x8-10</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
