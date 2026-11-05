@@ -1089,6 +1089,15 @@ document.addEventListener("DOMContentLoaded", () => {
         <option>4x12</option>
     `;
 
+    selector.addEventListener(
+    "change",
+    () => {
+
+        guardarEnFirebase();
+
+    }
+);
+    
     const peso =
         exercise.querySelector(".exercise-data");
 
@@ -1106,16 +1115,22 @@ function resetData(){
         localStorage.clear();
 
         document
-            .querySelectorAll("input")
-            .forEach(input => {
+.querySelectorAll("input, select")
+.forEach((campo,index) => {
 
-                if(input.type === "checkbox"){
-                    input.checked = false;
-                }else{
-                    input.value = "";
-                }
+    const key =
+        campo.id ||
+        "planner_" + index;
 
-            });
+    datos[key] =
+
+        campo.type === "checkbox"
+
+        ? campo.checked
+
+        : campo.value;
+
+});
 
         updateProgress();
 
@@ -1360,10 +1375,10 @@ Object.keys(datos).forEach(key => {
                 )
             );
 
-        campo =
-            document.querySelectorAll(
-                "input"
-            )[index];
+       campo =
+    document.querySelectorAll(
+        "input, select"
+    )[index];
 
     }
 
