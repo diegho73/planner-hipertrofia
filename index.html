@@ -1418,7 +1418,9 @@ function mostrarReemplazos(nombre){
 
 <script type="module">
 
-import { initializeApp }
+import {
+    initializeApp
+}
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
@@ -1431,38 +1433,44 @@ import {
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBZs85wIZSaxlqfdjGyXR-fA4wAD2ApcrQ",
-  authDomain: "planner-hipertrofia.firebaseapp.com",
-  projectId: "planner-hipertrofia",
-  storageBucket: "planner-hipertrofia.firebasestorage.app",
-  messagingSenderId: "615667446596",
-  appId: "1:615667446596:web:54394f2636a7f664c89d11"
+    apiKey: "AIzaSyBZs85wIZSaxlqfdjGyXR-fA4wAD2ApcrQ",
+    authDomain: "planner-hipertrofia.firebaseapp.com",
+    projectId: "planner-hipertrofia",
+    storageBucket: "planner-hipertrofia.firebasestorage.app",
+    messagingSenderId: "615667446596",
+    appId: "1:615667446596:web:54394f2636a7f664c89d11"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
 
 window.db = db;
 window.doc = doc;
 window.getDoc = getDoc;
 window.setDoc = setDoc;
 
+
+/* GUARDAR EN FIREBASE */
+
 async function guardarEnFirebase(){
 
     const datos = {};
 
     document
-    .querySelectorAll(
-        "input[id], select[id]"
-    )
-    .forEach(campo => {
+        .querySelectorAll(
+            "input[id], select[id]"
+        )
+        .forEach(campo => {
 
-        datos[campo.id] =
-            campo.type === "checkbox"
-            ? campo.checked
-            : campo.value;
+            datos[campo.id] =
+                campo.type === "checkbox"
+                    ? campo.checked
+                    : campo.value;
 
-    });
+        });
 
     try{
 
@@ -1487,7 +1495,7 @@ async function guardarEnFirebase(){
     catch(error){
 
         console.error(
-            "Error Firebase:",
+            "Error guardando en Firebase:",
             error
         );
 
@@ -1495,100 +1503,118 @@ async function guardarEnFirebase(){
 
 }
 
+
+/* CARGAR DESDE FIREBASE */
+
 async function cargarDesdeFirebase(){
 
     try{
 
         const snap =
-        await getDoc(
-            doc(
-                db,
-                "planner",
-                "principal"
-            )
-        );
+            await getDoc(
+                doc(
+                    db,
+                    "planner",
+                    "principal"
+                )
+            );
 
         if(!snap.exists()){
             return;
         }
 
         const datos =
-        snap.data().inputs || {};
-Object.keys(datos).forEach(key => {
+            snap.data().inputs || {};
 
-    let campo =
-        document.getElementById(key);
+        Object.keys(datos)
+            .forEach(id => {
 
-    if(!campo){
+                const campo =
+                    document.getElementById(id);
 
-        const index =
-            Number(
-                key.replace(
-                    "planner_",
-                    ""
-                )
-            );
+                if(!campo){
+                    return;
+                }
 
-       campo =
-    document.querySelectorAll(
-        "input, select"
-    )[index];
+                if(campo.type === "checkbox"){
 
-    }
+                    campo.checked =
+                        Boolean(datos[id]);
 
-    if(!campo) return;
+                }else{
 
-    if(campo.type === "checkbox"){
+                    campo.value =
+                        datos[id] ?? "";
 
-        campo.checked =
-            datos[key];
+                }
 
-    }else{
+            });
 
-        campo.value =
-            datos[key];
+        if(
+            typeof window.updateProgress
+            === "function"
+        ){
+            window.updateProgress();
+        }
 
     }
-
-});
-        
-    }
-        
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Error cargando desde Firebase:",
+            error
+        );
 
     }
 
 }
 
+
+/* EXPONER FUNCIONES AL SCRIPT NORMAL */
+
 window.guardarEnFirebase =
-guardarEnFirebase;
+    guardarEnFirebase;
 
 window.cargarDesdeFirebase =
-cargarDesdeFirebase;
+    cargarDesdeFirebase;
+
+
+/* MOSTRAR UNA RUTINA */
 
 window.mostrarDia = function(id){
 
     document
-    .querySelectorAll(".workout-day")
-    .forEach(dia => {
+        .querySelectorAll(
+            ".workout-day"
+        )
+        .forEach(dia => {
 
-        dia.style.display = "none";
+            dia.style.display =
+                "none";
 
-    });
+        });
+
+    const diaSeleccionado =
+        document.getElementById(id);
+
+    if(!diaSeleccionado){
+        return;
+    }
+
+    diaSeleccionado.style.display =
+        "block";
 
     document
-    .getElementById(id)
-    .style.display = "block";
+        .querySelectorAll(
+            ".tab-btn"
+        )
+        .forEach(btn => {
 
-    document
-    .querySelectorAll(".tab-btn")
-    .forEach(btn => {
+            btn.classList.remove(
+                "active"
+            );
 
-        btn.classList.remove("active");
-
-    });
+        });
 
     const boton =
         document.querySelector(
@@ -1605,64 +1631,85 @@ window.mostrarDia = function(id){
 
 };
 
-window.addEventListener("load", async () => {
 
-    await cargarDesdeFirebase();
+/* CARGA INICIAL */
 
-    updateProgress();
+window.addEventListener(
+    "load",
+    async () => {
 
-    mostrarDia("dia1");
+        await cargarDesdeFirebase();
 
-});
+        if(
+            typeof window.updateProgress
+            === "function"
+        ){
+            window.updateProgress();
+        }
+
+        window.mostrarDia("dia1");
+
+    }
+);
+
+
+/* SINCRONIZACIÓN EN TIEMPO REAL */
 
 onSnapshot(
-    doc(db, "planner", "principal"),
-    (snap) => {
+    doc(
+        db,
+        "planner",
+        "principal"
+    ),
 
-        if(!snap.exists()) return;
+    snap => {
+
+        if(!snap.exists()){
+            return;
+        }
 
         const datos =
             snap.data().inputs || {};
 
-        Object.keys(datos).forEach(key => {
+        Object.keys(datos)
+            .forEach(id => {
 
-            let campo =
-                document.getElementById(key);
+                const campo =
+                    document.getElementById(id);
 
-            if(!campo){
+                if(!campo){
+                    return;
+                }
 
-                const index =
-                    Number(
-                        key.replace(
-                            "planner_",
-                            ""
-                        )
-                    );
+                if(campo.type === "checkbox"){
 
-                campo =
-                    document.querySelectorAll(
-                        "input"
-                    )[index];
+                    campo.checked =
+                        Boolean(datos[id]);
 
-            }
+                }else{
 
-            if(!campo) return;
+                    campo.value =
+                        datos[id] ?? "";
 
-            if(campo.type === "checkbox"){
+                }
 
-                campo.checked =
-                    datos[key];
+            });
 
-            }else{
+        if(
+            typeof window.updateProgress
+            === "function"
+        ){
+            window.updateProgress();
+        }
 
-                campo.value =
-                    datos[key];
+    },
 
-            }
+    error => {
 
-        });
-
-        updateProgress();
+        console.error(
+            "Error de sincronización Firebase:",
+            error
+        );
 
     }
 );
