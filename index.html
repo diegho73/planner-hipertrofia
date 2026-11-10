@@ -1034,213 +1034,254 @@ function updateProgress(){
 document.addEventListener("DOMContentLoaded", () => {
 
     document
-    .querySelectorAll(".exercise label")
-    .forEach(label => {
+        .querySelectorAll(".exercise label")
+        .forEach(label => {
 
-        const nombreOriginal =
-            label.textContent.trim();
+            const nombreOriginal =
+                label.textContent.trim();
 
-        const grupo =
-            buscarGrupo(nombreOriginal);
+            const grupo =
+                buscarGrupo(nombreOriginal);
 
-        if(!grupo) return;
-
-        const select =
-            document.createElement("select");
-
-        select.className =
-            "exercise-select";
-
-        bibliotecaEjercicios[grupo]
-        .forEach(ejercicio => {
-
-            const option =
-                document.createElement("option");
-
-            option.value =
-                ejercicio;
-
-            option.textContent =
-                ejercicio;
-
-            if(ejercicio === nombreOriginal){
-                option.selected = true;
+            if(!grupo){
+                return;
             }
 
-            select.appendChild(option);
+            const select =
+                document.createElement("select");
+
+            select.className =
+                "exercise-select";
+
+            bibliotecaEjercicios[grupo]
+                .forEach(ejercicio => {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value =
+                        ejercicio;
+
+                    option.textContent =
+                        ejercicio;
+
+                    if(ejercicio === nombreOriginal){
+                        option.selected = true;
+                    }
+
+                    select.appendChild(option);
+
+                });
+
+            label.replaceWith(select);
 
         });
 
-        label.replaceWith(select);
-
-    });
-
-
     document
-    .querySelectorAll(".exercise")
-    .forEach(exercise => {
+        .querySelectorAll(".exercise")
+        .forEach(exercise => {
 
-        const selector =
-            document.createElement("select");
+            if(exercise.querySelector(".series")){
+                return;
+            }
 
-        selector.className = "series";
+            const selector =
+                document.createElement("select");
 
-        selector.innerHTML = `
-            <option>30seg</option>
-            <option>45seg</option>
-            <option>60seg</option>
-            <option>3x6</option>
-            <option>3x8</option>
-            <option>3x10</option>
-            <option>3x12</option>
-            <option>4x6</option>
-            <option selected>4x8</option>
-            <option>4x10</option>
-            <option>4x12</option>
-        `;
+            selector.className =
+                "series";
 
-        const peso =
-            exercise.querySelector(
-                ".exercise-data"
-            );
+            selector.innerHTML = `
+                <option value="30seg">30seg</option>
+                <option value="45seg">45seg</option>
+                <option value="60seg">60seg</option>
+                <option value="3x6">3x6</option>
+                <option value="3x8">3x8</option>
+                <option value="3x10">3x10</option>
+                <option value="3x12">3x12</option>
+                <option value="4x6">4x6</option>
+                <option value="4x8" selected>4x8</option>
+                <option value="4x10">4x10</option>
+                <option value="4x12">4x12</option>
+            `;
 
-    if(peso){
+            const peso =
+                exercise.querySelector(
+                    ".exercise-data"
+                );
 
-    exercise.insertBefore(
-        selector,
-        peso
-    );
+            if(peso){
 
-}
+                exercise.insertBefore(
+                    selector,
+                    peso
+                );
 
-});
+            }
 
+        });
 
     asignarIdsEstables();
 
-
     document
-    .querySelectorAll(
-        "input[id], select[id]"
-    )
-    .forEach(campo => {
+        .querySelectorAll(
+            "input[id], select[id]"
+        )
+        .forEach(campo => {
 
-        const saved =
-            localStorage.getItem(
-                campo.id
-            );
-
-        if(saved !== null){
-
-            if(campo.type === "checkbox"){
-                campo.checked =
-                    saved === "true";
-            }else{
-                campo.value =
-                    saved;
-            }
-
-        }
-
-        const evento =
-            campo.type === "checkbox" ||
-            campo.tagName === "SELECT"
-            ? "change"
-            : "input";
-
-        campo.addEventListener(
-            evento,
-            () => {
-
-                localStorage.setItem(
-                    campo.id,
-                    campo.type === "checkbox"
-                    ? campo.checked
-                    : campo.value
+            const saved =
+                localStorage.getItem(
+                    campo.id
                 );
 
-                guardarEnFirebase();
-                updateProgress();
+            if(saved !== null){
+
+                if(campo.type === "checkbox"){
+
+                    campo.checked =
+                        saved === "true";
+
+                }else{
+
+                    campo.value =
+                        saved;
+
+                }
 
             }
-        );
 
-    });
+            const evento =
+                campo.type === "checkbox" ||
+                campo.tagName === "SELECT"
+                ? "change"
+                : "input";
+
+            campo.addEventListener(
+                evento,
+                () => {
+
+                    localStorage.setItem(
+                        campo.id,
+                        campo.type === "checkbox"
+                            ? campo.checked
+                            : campo.value
+                    );
+
+                    if(
+                        typeof window.guardarEnFirebase
+                        === "function"
+                    ){
+
+                        window.guardarEnFirebase();
+
+                    }
+
+                    updateProgress();
+
+                }
+            );
+
+        });
 
     updateProgress();
 
 });
-    
-.forEach(exercise => {
+async function resetData(){
 
-    const selector =
-        document.createElement("select");
+    const confirmar =
+        confirm(
+            "¿Deseás borrar todos los datos guardados?"
+        );
 
-    selector.className = "series";
-
-    selector.innerHTML = `
-        <option>30seg</option>
-        <option>45seg</option>
-        <option>60seg</option>
-        <option>3x6</option>
-        <option>3x8</option>
-        <option>3x10</option>
-        <option>3x12</option>
-        <option>4x6</option>
-        <option selected>4x8</option>
-        <option>4x10</option>
-        <option>4x12</option>
-    `;
-
-    selector.addEventListener(
-    "change",
-    () => {
-
-        guardarEnFirebase();
-
+    if(!confirmar){
+        return;
     }
-);
-    
-    const peso =
-        exercise.querySelector(".exercise-data");
 
-    exercise.insertBefore(
-        selector,
-        peso
-    );
+    localStorage.clear();
 
-});
-    
-function resetData(){
+    document
+        .querySelectorAll(
+            "input[id], select[id]"
+        )
+        .forEach(campo => {
 
-    if(confirm("¿Deseas borrar todos los datos guardados?")){
+            if(campo.type === "checkbox"){
 
-        localStorage.clear();
+                campo.checked = false;
 
-        document
-.querySelectorAll("input, select")
-.forEach((campo,index) => {
+            }else if(
+                campo.classList.contains(
+                    "series"
+                )
+            ){
 
-    datos[key] =
+                campo.value = "4x8";
 
-        campo.type === "checkbox"
+            }else if(
+                campo.classList.contains(
+                    "exercise-select"
+                )
+            ){
 
-        ? campo.checked
+                campo.selectedIndex = 0;
 
-        : campo.value;
+            }else{
 
-});
+                campo.value = "";
+
+            }
+
+        });
+
+    try{
+
+        if(
+            typeof window.db !== "undefined" &&
+            typeof window.doc === "function" &&
+            typeof window.setDoc === "function"
+        ){
+
+            await window.setDoc(
+                window.doc(
+                    window.db,
+                    "planner",
+                    "principal"
+                ),
+                {
+                    inputs:{},
+                    actualizado:
+                        new Date().toISOString()
+                }
+            );
+
+        }
 
         updateProgress();
 
+        alert(
+            "Los datos fueron borrados correctamente."
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Error al borrar los datos:",
+            error
+        );
+
+        alert(
+            "Los datos locales se borraron, pero no se pudo limpiar Firebase."
+        );
+
     }
 
-}   
+}
 
 const darkBtn =
-document.getElementById(
-    "darkModeBtn"
-);
+    document.getElementById(
+       "darkModeBtn"
+    );
 
 if(darkBtn){
 
@@ -1249,8 +1290,8 @@ if(darkBtn){
         ()=>{
 
             document.body
-            .classList
-            .toggle("dark");
+                .classList
+                .toggle("dark");
 
             localStorage.setItem(
                 "darkMode",
@@ -1274,51 +1315,71 @@ if(
     .classList
     .add("dark");
 
-}    
+}   
+
+    
 window.mostrarDia = function(id){
 
      document
-    .querySelectorAll(".workout-day")
-    .forEach(dia => {
+         .querySelectorAll(".workout-day")
+         .forEach(dia => {
 
-        dia.style.display = "none";
+             dia.style.display = "none";
 
-    });
+         });
 
-    document
-    .getElementById(id)
-    .style.display = "block";
+    const diaSeleccionado =
+        document.getElementById(id);
 
-    document
-    .querySelectorAll(".tab-btn")
-    .forEach(btn => {
+    if(diaSeleccionado){
 
-        btn.classList.remove("active");
+        diaSeleccionado.style.display =
+            "block";
 
-    });
+    }
 
-    document
-    .querySelector(
-        `[onclick="mostrarDia('${id}')"]`
-    )
-    .classList.add("active");
+ document
+        .querySelectorAll(".tab-btn")
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+      const boton =
+        document.querySelector(
+            `[onclick="mostrarDia('${id}')"]`
+        );
+
+    if(boton){
+
+        boton.classList.add(
+            "active"
+        );
+
+    }
 
 };
 
 function obtenerReemplazos(nombre){
 
-    for(const grupo in bibliotecaEjercicios){
+    for(
+        const grupo in
+        bibliotecaEjercicios
+    ){
 
         if(
             bibliotecaEjercicios[grupo]
-            .includes(nombre)
+                .includes(nombre)
         ){
 
             return bibliotecaEjercicios[grupo]
-            .filter(
-                ejercicio =>
-                ejercicio !== nombre
-            );
+                .filter(
+                    ejercicio =>
+                        ejercicio !== nombre
+                );
 
         }
 
@@ -1327,6 +1388,7 @@ function obtenerReemplazos(nombre){
     return [];
 
 }
+
 
 function mostrarReemplazos(nombre){
 
@@ -1344,20 +1406,15 @@ function mostrarReemplazos(nombre){
     }
 
     alert(
-
         "Reemplazos para:\n\n" +
-
         nombre +
-
         "\n\n" +
-
         reemplazos.join("\n")
-
     );
 
 }
-    
-</script>
+
+</script>  
 
 <script type="module">
 
