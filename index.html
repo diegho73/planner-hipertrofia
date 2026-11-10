@@ -916,8 +916,67 @@ th{
 
 }
 
+function asignarIdsEstables(){
 
+    document
+    .querySelectorAll(".workout-day")
+    .forEach(dia => {
+
+        const diaId = dia.id;
+
+        dia
+        .querySelectorAll(".exercise")
+        .forEach((fila, index) => {
+
+            const check =
+                fila.querySelector(
+                    'input[type="checkbox"]'
+                );
+
+            const ejercicio =
+                fila.querySelector(
+                    ".exercise-select"
+                );
+
+            const series =
+                fila.querySelector(
+                    ".series"
+                );
+
+            const peso =
+                fila.querySelector(
+                    ".weight"
+                );
+
+            if(check){
+                check.id =
+                    `${diaId}_check_${index}`;
+            }
+
+            if(ejercicio){
+                ejercicio.id =
+                    `${diaId}_ejercicio_${index}`;
+            }
+
+            if(series){
+                series.id =
+                    `${diaId}_series_${index}`;
+            }
+
+            if(peso){
+                peso.id =
+                    `${diaId}_peso_${index}`;
+            }
+
+        });
+
+    });
+
+}
+    
 function updateProgress(){
+
+    
 
     const checks =
         document.querySelectorAll(
@@ -974,37 +1033,131 @@ function updateProgress(){
     
 document.addEventListener("DOMContentLoaded", () => {
 
-    const inputs = document.querySelectorAll("input");
+    document
+    .querySelectorAll(".exercise label")
+    .forEach(label => {
 
-    inputs.forEach((input,index)=>{
+        const nombreOriginal =
+            label.textContent.trim();
+
+        const grupo =
+            buscarGrupo(nombreOriginal);
+
+        if(!grupo) return;
+
+        const select =
+            document.createElement("select");
+
+        select.className =
+            "exercise-select";
+
+        bibliotecaEjercicios[grupo]
+        .forEach(ejercicio => {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                ejercicio;
+
+            option.textContent =
+                ejercicio;
+
+            if(ejercicio === nombreOriginal){
+                option.selected = true;
+            }
+
+            select.appendChild(option);
+
+        });
+
+        label.replaceWith(select);
+
+    });
+
+
+    document
+    .querySelectorAll(".exercise")
+    .forEach(exercise => {
+
+        const selector =
+            document.createElement("select");
+
+        selector.className = "series";
+
+        selector.innerHTML = `
+            <option>30seg</option>
+            <option>45seg</option>
+            <option>60seg</option>
+            <option>3x6</option>
+            <option>3x8</option>
+            <option>3x10</option>
+            <option>3x12</option>
+            <option>4x6</option>
+            <option selected>4x8</option>
+            <option>4x10</option>
+            <option>4x12</option>
+        `;
+
+        const peso =
+            exercise.querySelector(
+                ".exercise-data"
+            );
+
+         if(peso){
+
+        exercise.insertBefore(
+            selector,
+            peso
+        );
+
+    });
+
+
+    asignarIdsEstables();
+
+
+    document
+    .querySelectorAll(
+        "input[id], select[id]"
+    )
+    .forEach(campo => {
 
         const saved =
-            localStorage.getItem("planner_" + index);
+            localStorage.getItem(
+                campo.id
+            );
 
         if(saved !== null){
 
-            if(input.type === "checkbox"){
-                input.checked = saved === "true";
+            if(campo.type === "checkbox"){
+                campo.checked =
+                    saved === "true";
             }else{
-                input.value = saved;
+                campo.value =
+                    saved;
             }
+
         }
 
-        input.addEventListener(
-            input.type === "checkbox"
+        const evento =
+            campo.type === "checkbox" ||
+            campo.tagName === "SELECT"
             ? "change"
-            : "input",
+            : "input";
+
+        campo.addEventListener(
+            evento,
             () => {
 
                 localStorage.setItem(
-                    "planner_" + index,
-                    input.type === "checkbox"
-                    ? input.checked
-                    : input.value
+                    campo.id,
+                    campo.type === "checkbox"
+                    ? campo.checked
+                    : campo.value
                 );
 
                 guardarEnFirebase();
-
                 updateProgress();
 
             }
@@ -1012,62 +1165,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    document
-.querySelectorAll(".exercise label")
-.forEach(label => {
-
-    const nombreOriginal =
-        label.textContent.trim();
-
-    const grupo =
-        buscarGrupo(nombreOriginal);
-
-    if(!grupo) return;
-
-    const select =
-        document.createElement("select");
-
-    select.className =
-        "exercise-select";
-
-    bibliotecaEjercicios[grupo]
-    .forEach(ejercicio => {
-
-        const option =
-            document.createElement("option");
-
-        option.value =
-            ejercicio;
-
-        option.textContent =
-            ejercicio;
-
-        if(
-            ejercicio ===
-            nombreOriginal
-        ){
-
-            option.selected =
-                true;
-
-        }
-
-        select.appendChild(
-            option
-        );
-
-    });
-
-    label.replaceWith(select);
-
-});
-    
     updateProgress();
 
 });
-
-    document
-.querySelectorAll(".exercise")
+    
 .forEach(exercise => {
 
     const selector =
@@ -1117,10 +1218,6 @@ function resetData(){
         document
 .querySelectorAll("input, select")
 .forEach((campo,index) => {
-
-    const key =
-        campo.id ||
-        "planner_" + index;
 
     datos[key] =
 
@@ -1298,10 +1395,6 @@ async function guardarEnFirebase(){
     document
 .querySelectorAll("input")
 .forEach((input,index) => {
-
-    const key =
-        input.id ||
-        "planner_" + index;
 
     datos[key] =
         input.type === "checkbox"
