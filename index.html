@@ -592,8 +592,33 @@ th{
         overflow-x:auto;
         white-space:nowrap;
     }
+
+    .exercise.completed{
+    background-color:#e8f5e9 !important;
+    border:1px solid #81c784;
+    border-radius:8px;
+    padding:6px;
 }
 
+.exercise.completed .exercise-select,
+.exercise.completed .series,
+.exercise.completed .weight{
+    border-color:#4caf50;
+}
+
+.dark .exercise.completed{
+    background-color:#173d23 !important;
+    border-color:#388e3c;
+}
+
+.dark .exercise.completed .exercise-select,
+.dark .exercise.completed .series,
+.dark .exercise.completed .weight{
+    border-color:#66bb6a !important;
+}
+    
+}
+    
 @media print{
 
     button{
