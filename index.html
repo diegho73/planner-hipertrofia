@@ -83,6 +83,33 @@ h1{
 
 }
 
+    .exercise.completed{
+    background:#e8f5e9;
+    border-radius:8px;
+    padding:6px;
+    transition:background .2s ease;
+}
+
+.exercise.completed .exercise-select,
+.exercise.completed .series,
+.exercise.completed .weight{
+    border-color:#4caf50;
+}
+
+.exercise.completed .exercise-select{
+    font-weight:bold;
+}
+
+    .dark .exercise.completed{
+    background:#173d23;
+}
+
+.dark .exercise.completed .exercise-select,
+.dark .exercise.completed .series,
+.dark .exercise.completed .weight{
+    border-color:#66bb6a;
+}
+
 .exercise input[type="checkbox"]{
     width:20px;
     height:20px;
@@ -1005,6 +1032,26 @@ function updateProgress(){
         document.querySelectorAll(
             'input[type="checkbox"]:checked'
         );
+
+    document
+.querySelectorAll(".exercise")
+.forEach(fila => {
+
+    const check =
+        fila.querySelector(
+            'input[type="checkbox"]'
+        );
+
+    if(!check){
+        return;
+    }
+
+    fila.classList.toggle(
+        "completed",
+        check.checked
+    );
+
+});
 
     document.getElementById(
         "completedCount"
