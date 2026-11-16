@@ -1223,6 +1223,16 @@ document.addEventListener("DOMContentLoaded", () => {
         .querySelectorAll(".exercise label")
         .forEach(label => {
 
+                    const fila =
+            label.closest(".exercise");
+
+        if(
+            !fila ||
+            fila.querySelector(".exercise-select")
+        ){
+            return;
+        }
+
             const nombreOriginal =
                 label.textContent.trim();
 
@@ -1354,15 +1364,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                     if(
-                        typeof window.guardarEnFirebase
-                        === "function"
-                    ){
+                       if(
+            typeof window.guardarEnFirebase
+            === "function"
+     ){
 
-                        window.guardarEnFirebase();
+     window.guardarEnFirebase();
 
-                    }
+     }
 
-                    updateProgress();
+     updateProgress();
+     actualizarSemanaRutina();
 
                 }
             );
