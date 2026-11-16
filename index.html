@@ -472,6 +472,8 @@ th{
 }
 
 .tab-btn{
+    position:relative;
+    
     min-height:64px;
     padding:8px 12px;
 
@@ -526,6 +528,25 @@ th{
     box-shadow:
         0 4px 0 #061b40,
         0 6px 12px rgba(11,44,107,.35);
+}
+
+    .tab-btn.dia-completo::after{
+    content:"✓";
+    position:absolute;
+    top:5px;
+    right:7px;
+
+    width:20px;
+    height:20px;
+    line-height:20px;
+
+    border-radius:50%;
+    background:#2e7d32;
+    color:#ffffff;
+
+    font-size:13px;
+    font-weight:bold;
+    text-align:center;
 }
 
     .tab-dia{
@@ -1500,10 +1521,49 @@ function asignarIdsEstables(){
     });
 
 }
+
+  function actualizarDiasCompletos(){
+
+    document
+    .querySelectorAll(".workout-day")
+    .forEach(dia => {
+
+        const total =
+            dia.querySelectorAll(
+                '.exercise input[type="checkbox"]'
+            ).length;
+
+        const marcados =
+            dia.querySelectorAll(
+                '.exercise input[type="checkbox"]:checked'
+            ).length;
+
+        const boton =
+            document.querySelector(
+                `[onclick="mostrarDia('${dia.id}')"]`
+            );
+
+        if(boton){
+
+            boton.classList.toggle(
+                "dia-completo",
+                total > 0 && total === marcados
+            );
+
+        }
+
+    });
+
+}  
     
 function updateProgress(){
 
-    
+    actualizarDiasCompletos();
+
+    const checks =
+        document.querySelectorAll(
+            'input[type="checkbox"]'
+        );
 
     const checks =
         document.querySelectorAll(
