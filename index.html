@@ -1873,8 +1873,6 @@ function revisarPR(fila){
     actualizarSelectorHistorial();
 
 }
-    
-}
 
 
 function actualizarPanelPR(){
@@ -2444,7 +2442,6 @@ function formatearFechaHistorial(
     }
 );
 
-
 document.addEventListener(
     "click",
     e => {
@@ -2464,13 +2461,16 @@ document.addEventListener(
         const fecha =
             boton.dataset.fecha;
 
-        if(
-            !confirm(
-                "¿Borrar este registro de " +
+        const confirmar =
+            confirm(
+                "¿Borrar el registro de " +
                 nombre +
+                " del " +
+                formatearFechaHistorial(fecha) +
                 "?"
-            )
-        ){
+            );
+
+        if(!confirmar){
             return;
         }
 
@@ -2487,13 +2487,15 @@ document.addEventListener(
 
         historial[nombre] =
             historial[nombre]
-            .filter(registro =>
-                registro.fecha !== fecha
-            );
+            .filter(registro => {
 
-        if(
-            !historial[nombre].length
-        ){
+                return (
+                    registro.fecha !== fecha
+                );
+
+            });
+
+        if(!historial[nombre].length){
 
             delete historial[nombre];
 
@@ -2505,12 +2507,34 @@ document.addEventListener(
 
         actualizarSelectorHistorial();
 
-        mostrarHistorialEjercicio(
-            nombre
-        );
+        if(historial[nombre]){
+
+            const selector =
+                document.getElementById(
+                    "historialEjercicio"
+                );
+
+            if(selector){
+
+                selector.value =
+                    nombre;
+
+            }
+
+            mostrarHistorialEjercicio(
+                nombre
+            );
+
+        }else{
+
+            mostrarHistorialEjercicio(
+                ""
+            );
+
+        }
 
     }
-);   
+);
     
 function updateProgress(){
 
