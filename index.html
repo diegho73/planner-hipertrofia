@@ -1346,40 +1346,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-            const evento =
-                campo.type === "checkbox" ||
-                campo.tagName === "SELECT"
-                ? "change"
-                : "input";
+          const evento =
+    campo.type === "checkbox" ||
+    campo.tagName === "SELECT"
+    ? "change"
+    : "input";
 
-            campo.addEventListener(
-                evento,
-                () => {
+campo.addEventListener(
+    evento,
+    () => {
 
-                    localStorage.setItem(
-                        campo.id,
-                        campo.type === "checkbox"
-                            ? campo.checked
-                            : campo.value
-                    );
+        localStorage.setItem(
+            campo.id,
+            campo.type === "checkbox"
+                ? campo.checked
+                : campo.value
+        );
 
-                    if(
-                       if(
+        if(
             typeof window.guardarEnFirebase
             === "function"
-     ){
+        ){
 
-     window.guardarEnFirebase();
+            window.guardarEnFirebase();
 
-     }
+        }
 
-     updateProgress();
-     actualizarSemanaRutina();
+        updateProgress();
 
-                }
-            );
+        actualizarSemanaRutina();
 
-        });
+    }
+);
+
+});
 
      const fechaInicio =
         document.getElementById(
