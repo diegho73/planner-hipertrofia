@@ -1565,35 +1565,30 @@ function updateProgress(){
             'input[type="checkbox"]'
         );
 
-    const checks =
-        document.querySelectorAll(
-            'input[type="checkbox"]'
-        );
-
     const checked =
         document.querySelectorAll(
             'input[type="checkbox"]:checked'
         );
 
     document
-.querySelectorAll(".exercise")
-.forEach(fila => {
+    .querySelectorAll(".exercise")
+    .forEach(fila => {
 
-    const check =
-        fila.querySelector(
-            'input[type="checkbox"]'
+        const check =
+            fila.querySelector(
+                'input[type="checkbox"]'
+            );
+
+        if(!check){
+            return;
+        }
+
+        fila.classList.toggle(
+            "completed",
+            check.checked
         );
 
-    if(!check){
-        return;
-    }
-
-    fila.classList.toggle(
-        "completed",
-        check.checked
-    );
-
-});
+    });
 
     document.getElementById(
         "completedCount"
@@ -1606,11 +1601,13 @@ function updateProgress(){
         checks.length;
 
     const percent =
-        Math.round(
-            checked.length /
-            checks.length *
-            100
-        );
+        checks.length
+            ? Math.round(
+                checked.length /
+                checks.length *
+                100
+            )
+            : 0;
 
     document.getElementById(
         "progressBar"
@@ -1622,21 +1619,10 @@ function updateProgress(){
     ).textContent =
         percent + "%";
 
-    const peso =
-        document.getElementById(
-            "pesoActual"
-        );
-
-    if(peso){
-
-        document.getElementById(
-            "pesoActualCard"
-        ).textContent =
-            peso.value || "70";
-
-    }
-
 }
+
+window.updateProgress =
+    updateProgress;
     
 document.addEventListener("DOMContentLoaded", () => {
 
