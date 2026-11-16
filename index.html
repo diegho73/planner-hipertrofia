@@ -575,9 +575,64 @@ th{
 
     display:none;
 }
+
+    #panelPR > summary{
+    cursor:pointer;
+    font-weight:bold;
+    font-size:18px;
+}
+
+#panelPR .pr-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    padding:8px 0;
+    border-bottom:1px solid rgba(0,0,0,.12);
+}
+
+.pr-borrar{
+    cursor:pointer;
+    padding:2px 10px;
+    opacity:.6;
+}
+
+.exercise.pr-row{
+    box-shadow:inset 0 0 0 2px #f5b301;
+    border-radius:8px;
+}
+
+#avisoPR{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translate(-50%,20px);
+    max-width:90%;
+    padding:12px 16px;
+    background:#f5b301;
+    color:#222;
+    font-weight:bold;
+    text-align:center;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:10000;
+}
+
+#avisoPR.visible{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+.dark #panelPR .pr-item{
+    border-bottom-color:#444;
+}
     
 @media (max-width:768px){
 
+    
     .tabs{
 
         display:grid;
@@ -1316,6 +1371,12 @@ th{
 
 </div>
 
+    <details class="summary" id="panelPR">
+    <summary>🏆 Récords personales <span id="contadorPR"></span></summary>
+    <div id="listaPR"></div>
+    <input type="hidden" id="prData">
+</details>
+
 <script>
 
    const bibliotecaEjercicios = {
@@ -1555,6 +1616,308 @@ function asignarIdsEstables(){
     });
 
 }  
+
+   /* ===== RECORDS PERSONALES (PR) ===== */
+
+function fechaLocalISO(){
+
+    const f = new Date();
+
+    return f.getFullYear() + "-" +
+        String(f.getMonth() + 1).padStart(2, "0") + "-" +
+        String(f.getDate()).padStart(2, "0");
+
+}
+
+function formatoKg(n){
+
+    return String(Math.round(n * 100) / 100)
+        .replace(".", ",");
+
+}
+
+function leerPRs(){
+
+    const campo = document.getElementById("prData");
+
+    if(!campo || !campo.value){
+        return {};
+    }
+
+    try{
+
+        const datos = JSON.parse(campo.value);
+
+        return (datos && typeof datos === "object")
+            ? datos
+            : {};
+
+    }
+    catch(error){
+
+        return {};
+
+    }
+
+}
+
+function guardarPRs(prs){
+
+    const campo = document.getElementById("prData");
+
+    if(!campo){
+        return;
+    }
+
+    campo.value = JSON.stringify(prs);
+
+    localStorage.setItem("prData", campo.value);
+
+    if(typeof window.guardarEnFirebase === "function"){
+
+        window.guardarEnFirebase();
+
+    }
+
+}
+
+function nombreDeFila(fila){
+
+    const select = fila.querySelector(".exercise-select");
+
+    if(select){
+        return select.value;
+    }
+
+    const label = fila.querySelector("label");
+
+    return label ? label.textContent.trim() : "";
+
+}
+
+function pesoDeFila(fila){
+
+    const campo = fila.querySelector(".weight");
+
+    if(!campo){
+        return 0;
+    }
+
+    const n = parseFloat(
+        String(campo.value).replace(",", ".")
+    );
+
+    return isNaN(n) ? 0 : n;
+
+}
+
+function mostrarAvisoPR(texto){
+
+    let aviso = document.getElementById("avisoPR");
+
+    if(!aviso){
+
+        aviso = document.createElement("div");
+        aviso.id = "avisoPR";
+        document.body.appendChild(aviso);
+
+    }
+
+    aviso.textContent = texto;
+    aviso.classList.add("visible");
+
+    clearTimeout(aviso._timer);
+
+    aviso._timer = setTimeout(() => {
+
+        aviso.classList.remove("visible");
+
+    }, 4000);
+
+}
+
+function revisarPR(fila){
+
+    const check = fila.querySelector('input[type="checkbox"]');
+
+    if(!check || !check.checked){
+        return;
+    }
+
+    const peso = pesoDeFila(fila);
+    const nombre = nombreDeFila(fila);
+
+    if(!nombre || peso <= 0){
+        return;
+    }
+
+    const prs = leerPRs();
+    const actual = prs[nombre];
+
+    if(!actual){
+
+        prs[nombre] = {
+            peso: peso,
+            fecha: fechaLocalISO(),
+            nuevo: false
+        };
+
+        guardarPRs(prs);
+
+    }
+    else if(peso > actual.peso){
+
+        prs[nombre] = {
+            peso: peso,
+            fecha: fechaLocalISO(),
+            nuevo: true
+        };
+
+        guardarPRs(prs);
+
+        mostrarAvisoPR(
+            "🏆 ¡Nuevo PR! " + nombre + ": " +
+            formatoKg(peso) + " kg (antes " +
+            formatoKg(actual.peso) + " kg)"
+        );
+
+    }
+
+    actualizarPanelPR();
+
+}
+
+function actualizarPanelPR(){
+
+    const prs = leerPRs();
+
+    const nombres = Object.keys(prs)
+        .sort((a, b) => a.localeCompare(b, "es"));
+
+    const hoy = fechaLocalISO();
+
+    const lista = document.getElementById("listaPR");
+
+    if(lista){
+
+        lista.innerHTML = "";
+
+        if(!nombres.length){
+
+            lista.textContent =
+                "Todavía no hay récords. Marcá un ejercicio y cargá el peso.";
+
+        }
+
+        nombres.forEach(nombre => {
+
+            const r = prs[nombre];
+
+            const partes = String(r.fecha || "").split("-");
+
+            const fecha = partes.length === 3
+                ? partes[2] + "/" + partes[1]
+                : "";
+
+            const item = document.createElement("div");
+            item.className = "pr-item";
+
+            const texto = document.createElement("span");
+
+            texto.textContent =
+                nombre + ": " + formatoKg(r.peso) + " kg" +
+                (fecha ? " · " + fecha : "");
+
+            const borrar = document.createElement("span");
+            borrar.className = "pr-borrar";
+            borrar.dataset.nombre = nombre;
+            borrar.title = "Borrar récord";
+            borrar.textContent = "✕";
+
+            item.appendChild(texto);
+            item.appendChild(borrar);
+            lista.appendChild(item);
+
+        });
+
+    }
+
+    const contador = document.getElementById("contadorPR");
+
+    if(contador){
+
+        contador.textContent =
+            nombres.length ? "(" + nombres.length + ")" : "";
+
+    }
+
+    document.querySelectorAll(".exercise").forEach(fila => {
+
+        const r = prs[nombreDeFila(fila)];
+
+        const check =
+            fila.querySelector('input[type="checkbox"]');
+
+        const esPR = !!(
+            r &&
+            r.nuevo &&
+            r.fecha === hoy &&
+            check &&
+            check.checked &&
+            pesoDeFila(fila) === r.peso
+        );
+
+        fila.classList.toggle("pr-row", esPR);
+
+    });
+
+}
+
+document.addEventListener("change", e => {
+
+    const objetivo = e.target;
+
+    const esCheck = objetivo.type === "checkbox";
+
+    const esPeso =
+        objetivo.classList &&
+        objetivo.classList.contains("weight");
+
+    if(!esCheck && !esPeso){
+        return;
+    }
+
+    const fila = objetivo.closest(".exercise");
+
+    if(fila){
+        revisarPR(fila);
+    }
+
+});
+
+document.addEventListener("click", e => {
+
+    const boton = e.target.closest(".pr-borrar");
+
+    if(!boton){
+        return;
+    }
+
+    const nombre = boton.dataset.nombre;
+
+    if(!confirm("¿Borrar el récord de " + nombre + "?")){
+        return;
+    }
+
+    const prs = leerPRs();
+
+    delete prs[nombre];
+
+    guardarPRs(prs);
+
+    actualizarPanelPR();
+
+}); 
     
 function updateProgress(){
 
@@ -1938,14 +2301,22 @@ async function resetData(){
 
     const confirmar =
         confirm(
-            "¿Deseás borrar todos los datos guardados?"
+            "¿Deseás borrar los pesos y checks guardados?\n\nLos récords personales se conservan."
         );
 
     if(!confirmar){
         return;
     }
 
+    const campoPR = document.getElementById("prData");
+
+    const prs = campoPR ? campoPR.value : "";
+
     localStorage.clear();
+
+    if(prs){
+        localStorage.setItem("prData", prs);
+    }
 
     try{
 
@@ -1962,7 +2333,7 @@ async function resetData(){
                     "principal"
                 ),
                 {
-                    inputs:{},
+                    inputs: prs ? { prData: prs } : {},
                     actualizado:
                         new Date().toISOString()
                 }
@@ -1991,7 +2362,6 @@ async function resetData(){
     }
 
 }
-
 const darkBtn =
     document.getElementById(
        "darkModeBtn"
