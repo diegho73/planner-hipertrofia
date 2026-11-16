@@ -841,6 +841,30 @@ th{
         <div>Peso</div>
     </div>
 
+    <div class="exercise" data-series="45seg">
+        <input type="checkbox">
+        <label>Plancha</label>
+        <div class="exercise-data">
+            <input class="weight" placeholder="Peso">
+        </div>
+    </div>
+
+    <div class="exercise" data-series="3x10">
+        <input type="checkbox">
+        <label>Dead Bug</label>
+        <div class="exercise-data">
+            <input class="weight" placeholder="Peso">
+        </div>
+    </div>
+
+    <div class="exercise" data-series="3x12">
+        <input type="checkbox">
+        <label>Pallof Press</label>
+        <div class="exercise-data">
+            <input class="weight" placeholder="Peso">
+        </div>
+    </div>
+    
     <div class="exercise">
         <input type="checkbox">
         <label>Press banca</label>
@@ -1344,7 +1368,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             selector.className =
                 "series";
-
+            
+            const serieInicial =
+                exercise.dataset.series || "4x8";
+            
             selector.innerHTML = `
                 <option value="30seg">30seg</option>
                 <option value="45seg">45seg</option>
@@ -1358,6 +1385,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <option value="4x10">4x10</option>
                 <option value="4x12">4x12</option>
             `;
+
+                        selector.value =
+                serieInicial;
 
             const peso =
                 exercise.querySelector(
