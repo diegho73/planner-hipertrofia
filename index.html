@@ -1856,27 +1856,6 @@ async function resetData(){
 
 }
 
-            alert(
-            "Los datos fueron borrados correctamente."
-        );
-
-        location.reload();
-
-    catch(error){
-
-        console.error(
-            "Error al borrar los datos:",
-            error
-        );
-
-        alert(
-            "Los datos locales se borraron, pero no se pudo limpiar Firebase."
-        );
-
-    }
-
-}
-
 const darkBtn =
     document.getElementById(
        "darkModeBtn"
