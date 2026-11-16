@@ -736,6 +736,11 @@ th{
 <button id="darkModeBtn">
     🌙 Modo oscuro
 </button>
+    
+<button onclick="resetData()">
+    🗑 Borrar datos
+</button>
+    
 
 </div>
 
@@ -1806,40 +1811,6 @@ async function resetData(){
 
     localStorage.clear();
 
-    document
-        .querySelectorAll(
-            "input[id], select[id]"
-        )
-        .forEach(campo => {
-
-            if(campo.type === "checkbox"){
-
-                campo.checked = false;
-
-            }else if(
-                campo.classList.contains(
-                    "series"
-                )
-            ){
-
-                campo.value = "4x8";
-
-            }else if(
-                campo.classList.contains(
-                    "exercise-select"
-                )
-            ){
-
-                campo.selectedIndex = 0;
-
-            }else{
-
-                campo.value = "";
-
-            }
-
-        });
-
     try{
 
         if(
@@ -1863,11 +1834,33 @@ async function resetData(){
 
         }
 
-        updateProgress();
-
         alert(
             "Los datos fueron borrados correctamente."
         );
+
+        location.reload();
+
+    }
+    catch(error){
+
+        console.error(
+            "Error al borrar los datos:",
+            error
+        );
+
+        alert(
+            "Los datos locales se borraron, pero no se pudo limpiar Firebase. Revisá si un bloqueador de anuncios o de privacidad está bloqueando la conexión."
+        );
+
+    }
+
+}
+
+            alert(
+            "Los datos fueron borrados correctamente."
+        );
+
+        location.reload();
 
     }
     catch(error){
