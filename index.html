@@ -756,10 +756,12 @@ th{
 
     <div class="tabs">
 
-    <button class="tab-btn active"
-        onclick="mostrarDia('dia1')">
-        💪 Dia 1 - Tren Superior 
-    </button>
+    <button
+    class="tab-btn"
+    onclick="mostrarDia('dia1')">
+    Pecho + Tríceps
+</button>
+
 
     <button class="tab-btn"
         onclick="mostrarDia('dia2')">
@@ -782,7 +784,7 @@ th{
 
 <div class="card workout-day"
      id="dia1">
-<h2>Día 1 - Tren Superior</h2>
+<h2>Día 1 - Pecho + Tríceps</h2>
 
 <div class="header-row">
 
@@ -794,20 +796,59 @@ th{
 
     <span>Peso</span>
 
+<div class="header-row">
+    <div></div>
+    <div>Ejercicio</div>
+    <div>Series</div>
+    <div>Peso</div>
 </div>
 
-<div class="exercise"><input type="checkbox"><label>Plancha</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Dead Bug</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Pallof Press</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Press banca</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Press inclinado</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Dominadas</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Remo barra</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Press militar</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Curl bíceps</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
-<div class="exercise"><input type="checkbox"><label>Tríceps polea</label><div class="exercise-data"><input class="weight" placeholder="Peso"></div></div>
+<div class="exercise">
+    <input type="checkbox">
+    <label>Press banca</label>
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
+</div>
 
+<div class="exercise">
+    <input type="checkbox">
+    <label>Press inclinado mancuernas</label>
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
+</div>
 
+<div class="exercise">
+    <input type="checkbox">
+    <label>Press máquina</label>
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
+</div>
+
+<div class="exercise">
+    <input type="checkbox">
+    <label>Aperturas polea</label>
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
+</div>
+
+<div class="exercise">
+    <input type="checkbox">
+    <label>Tríceps cuerda</label>
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
+</div>
+
+<div class="exercise">
+    <input type="checkbox">
+    <label>Extensión tríceps sobre cabeza</label>
+    <div class="exercise-data">
+        <input class="weight" placeholder="Peso">
+    </div>
 </div>
 
 <!-- DIA 2 -->
@@ -897,22 +938,22 @@ th{
 
    const bibliotecaEjercicios = {
 
-    pecho:[
-        "Press banca",
-        "Press inclinado",
-        "Press inclinado barra",
-        "Press inclinado mancuernas",
-        "Press declinado",
-        "Press mancuernas",
-        "Press máquina",
-        "Press convergente",
-        "Fondos",
-        "Aperturas",
-        "Aperturas polea",
-        "Pec Deck",
-        "Flexiones",
-        "Flexiones lastradas"
-    ],
+  pecho:[
+    "Press banca",
+    "Press inclinado",
+    "Press inclinado barra",
+    "Press inclinado mancuernas",
+    "Press mancuernas",
+    "Press declinado",
+    "Press máquina",
+    "Press convergente",
+    "Fondos",
+    "Aperturas",
+    "Aperturas polea",
+    "Pec Deck",
+    "Flexiones",
+    "Flexiones lastradas"
+ ],
 
     espalda:[
         "Dominadas",
@@ -954,15 +995,21 @@ th{
         "Curl inclinado"
     ],
 
-    triceps:[
-        "Tríceps polea",
-        "Tríceps cuerda",
-        "Press francés",
-        "Fondos",
-        "Patada tríceps",
-        "Extensión polea",
-        "Extensión mancuerna"
-    ],
+ triceps:[
+    "Tríceps polea",
+    "Tríceps cuerda",
+    "Extensión tríceps sobre cabeza",
+    "Extensión tríceps unilateral",
+    "Press francés",
+    "Press francés barra EZ",
+    "Fondos",
+    "Fondos asistidos",
+    "Press banca agarre cerrado",
+    "Extensión polea barra",
+    "Extensión polea cuerda",
+    "Extensión mancuerna",
+    "Patada tríceps"
+],
 
     cuadriceps:[
         "Sentadilla",
