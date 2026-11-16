@@ -9,7 +9,7 @@
 
 
 <style>
-
+    
 *{
     box-sizing:border-box;
 }
@@ -629,6 +629,7 @@ th{
 .dark #panelPR .pr-item{
     border-bottom-color:#444;
 }
+
     
 @media (max-width:768px){
 
@@ -858,7 +859,51 @@ th{
     font-size:14px;
     text-align:center;
 }
-    
+
+    .fecha-rutina{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+
+    width:100% !important;
+    max-width:150px;
+
+    height:40px;
+
+    margin:8px auto 0;
+
+    font-size:14px;
+    text-align:center;
+}
+
+.historial-controles{
+    display:block;
+}
+
+.historial-controles label{
+    display:block;
+    margin-bottom:6px;
+}
+
+#historialEjercicio{
+    width:100%;
+}
+
+.historial-item{
+    grid-template-columns:
+        72px
+        minmax(0,1fr)
+        65px
+        32px;
+
+    gap:5px;
+}
+
+.historial-fecha,
+.historial-serie{
+    font-size:12px;
+}
+
 }
     
 @media print{
@@ -1377,6 +1422,39 @@ th{
     <input type="hidden" id="prData">
 </details>
 
+    <details class="summary" id="panelHistorial">
+
+    <summary>
+        📈 Historial de cargas
+        <span id="contadorHistorial"></span>
+    </summary>
+
+    <div class="historial-controles">
+
+        <label for="historialEjercicio">
+            Ejercicio:
+        </label>
+
+        <select id="historialEjercicio">
+            <option value="">
+                Seleccionar ejercicio
+            </option>
+        </select>
+
+    </div>
+
+    <div id="listaHistorial">
+
+        Seleccioná un ejercicio para ver sus cargas.
+
+    </div>
+
+    <input
+        type="hidden"
+        id="historialData">
+
+</details>
+
 <script>
 
    const bibliotecaEjercicios = {
@@ -1787,6 +1865,18 @@ function revisarPR(fila){
 
 }
 
+    if(
+    typeof actualizarSelectorHistorial
+    === "function"
+){
+
+    actualizarSelectorHistorial();
+
+}
+    
+}
+
+
 function actualizarPanelPR(){
 
     const prs = leerPRs();
@@ -1889,9 +1979,13 @@ document.addEventListener("change", e => {
 
     const fila = objetivo.closest(".exercise");
 
-    if(fila){
-        revisarPR(fila);
-    }
+   if(fila){
+
+    revisarPR(fila);
+
+    registrarHistorial(fila);
+
+}
 
 });
 
@@ -1918,8 +2012,509 @@ document.addEventListener("click", e => {
     actualizarPanelPR();
 
 }); 
+
+ /* ===== HISTORIAL DE CARGAS ===== */
+
+function leerHistorial(){
+
+    const campo =
+        document.getElementById(
+            "historialData"
+        );
+
+    if(!campo || !campo.value){
+        return {};
+    }
+
+    try{
+
+        const historial =
+            JSON.parse(campo.value);
+
+        return (
+            historial &&
+            typeof historial === "object"
+        )
+            ? historial
+            : {};
+
+    }
+    catch(error){
+
+        console.error(
+            "Error leyendo historial:",
+            error
+        );
+
+        return {};
+
+    }
+
+}
+
+
+function guardarHistorial(historial){
+
+    const campo =
+        document.getElementById(
+            "historialData"
+        );
+
+    if(!campo){
+        return;
+    }
+
+    campo.value =
+        JSON.stringify(historial);
+
+    localStorage.setItem(
+        "historialData",
+        campo.value
+    );
+
+    if(
+        typeof window.guardarEnFirebase
+        === "function"
+    ){
+
+        window.guardarEnFirebase();
+
+    }
+
+}
+
+
+function serieDeFila(fila){
+
+    const campo =
+        fila.querySelector(".series");
+
+    return campo
+        ? campo.value
+        : "";
+
+}
+
+
+function registrarHistorial(fila){
+
+    const check =
+        fila.querySelector(
+            'input[type="checkbox"]'
+        );
+
+    if(!check || !check.checked){
+        return;
+    }
+
+    const nombre =
+        nombreDeFila(fila);
+
+    const peso =
+        pesoDeFila(fila);
+
+    const serie =
+        serieDeFila(fila);
+
+    if(!nombre || peso <= 0){
+        return;
+    }
+
+    const historial =
+        leerHistorial();
+
+    if(!Array.isArray(historial[nombre])){
+
+        historial[nombre] = [];
+
+    }
+
+    const fecha =
+        fechaLocalISO();
+
+    const registroExistente =
+        historial[nombre]
+        .find(registro =>
+            registro.fecha === fecha
+        );
+
+    if(registroExistente){
+
+        registroExistente.peso =
+            peso;
+
+        registroExistente.serie =
+            serie;
+
+    }else{
+
+        historial[nombre].push({
+
+            fecha: fecha,
+            peso: peso,
+            serie: serie
+
+        });
+
+    }
+
+    historial[nombre]
+    .sort((a,b) =>
+        a.fecha.localeCompare(b.fecha)
+    );
+
+    historial[nombre] =
+        historial[nombre]
+        .slice(-20);
+
+    guardarHistorial(historial);
+
+    actualizarSelectorHistorial();
+
+    mostrarHistorialEjercicio(
+        nombre
+    );
+
+}
+
+
+function actualizarSelectorHistorial(){
+
+    const selector =
+        document.getElementById(
+            "historialEjercicio"
+        );
+
+    if(!selector){
+        return;
+    }
+
+    const valorActual =
+        selector.value;
+
+    const historial =
+        leerHistorial();
+
+    const nombres =
+        Object.keys(historial)
+        .filter(nombre =>
+            Array.isArray(
+                historial[nombre]
+            ) &&
+            historial[nombre].length
+        )
+        .sort((a,b) =>
+            a.localeCompare(b,"es")
+        );
+
+    selector.innerHTML = "";
+
+    const opcionInicial =
+        document.createElement(
+            "option"
+        );
+
+    opcionInicial.value = "";
+
+    opcionInicial.textContent =
+        "Seleccionar ejercicio";
+
+    selector.appendChild(
+        opcionInicial
+    );
+
+    nombres.forEach(nombre => {
+
+        const opcion =
+            document.createElement(
+                "option"
+            );
+
+        opcion.value =
+            nombre;
+
+        opcion.textContent =
+            nombre;
+
+        selector.appendChild(
+            opcion
+        );
+
+    });
+
+    if(nombres.includes(valorActual)){
+
+        selector.value =
+            valorActual;
+
+    }
+
+    const contador =
+        document.getElementById(
+            "contadorHistorial"
+        );
+
+    if(contador){
+
+        contador.textContent =
+            nombres.length
+                ? "(" + nombres.length + ")"
+                : "";
+
+    }
+
+}
+
+
+function mostrarHistorialEjercicio(
+    nombre
+){
+
+    const lista =
+        document.getElementById(
+            "listaHistorial"
+        );
+
+    if(!lista){
+        return;
+    }
+
+    lista.innerHTML = "";
+
+    if(!nombre){
+
+        lista.className =
+            "historial-vacio";
+
+        lista.textContent =
+            "Seleccioná un ejercicio para ver sus cargas.";
+
+        return;
+
+    }
+
+    const historial =
+        leerHistorial();
+
+    const registros =
+        Array.isArray(
+            historial[nombre]
+        )
+            ? [...historial[nombre]]
+            : [];
+
+    if(!registros.length){
+
+        lista.className =
+            "historial-vacio";
+
+        lista.textContent =
+            "Todavía no hay cargas guardadas para este ejercicio.";
+
+        return;
+
+    }
+
+    lista.className = "";
+
+    registros
+    .sort((a,b) =>
+        b.fecha.localeCompare(a.fecha)
+    )
+    .forEach(registro => {
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+        item.className =
+            "historial-item";
+
+        const fecha =
+            document.createElement(
+                "span"
+            );
+
+        fecha.className =
+            "historial-fecha";
+
+        fecha.textContent =
+            formatearFechaHistorial(
+                registro.fecha
+            );
+
+        const serie =
+            document.createElement(
+                "span"
+            );
+
+        serie.className =
+            "historial-serie";
+
+        serie.textContent =
+            registro.serie || "--";
+
+        const peso =
+            document.createElement(
+                "span"
+            );
+
+        peso.className =
+            "historial-peso";
+
+        peso.textContent =
+            formatoKg(
+                registro.peso
+            ) +
+            " kg";
+
+        const borrar =
+            document.createElement(
+                "button"
+            );
+
+        borrar.type =
+            "button";
+
+        borrar.className =
+            "historial-borrar";
+
+        borrar.dataset.nombre =
+            nombre;
+
+        borrar.dataset.fecha =
+            registro.fecha;
+
+        borrar.title =
+            "Borrar registro";
+
+        borrar.textContent =
+            "✕";
+
+        item.appendChild(fecha);
+        item.appendChild(serie);
+        item.appendChild(peso);
+        item.appendChild(borrar);
+
+        lista.appendChild(item);
+
+    });
+
+}
+
+
+function formatearFechaHistorial(
+    fechaISO
+){
+
+    const partes =
+        String(fechaISO)
+        .split("-");
+
+    if(partes.length !== 3){
+        return fechaISO;
+    }
+
+    return (
+        partes[2] +
+        "/" +
+        partes[1] +
+        "/" +
+        partes[0]
+    );
+
+}   
+
+ document.addEventListener(
+    "change",
+    e => {
+
+        if(
+            e.target.id ===
+            "historialEjercicio"
+        ){
+
+            mostrarHistorialEjercicio(
+                e.target.value
+            );
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "click",
+    e => {
+
+        const boton =
+            e.target.closest(
+                ".historial-borrar"
+            );
+
+        if(!boton){
+            return;
+        }
+
+        const nombre =
+            boton.dataset.nombre;
+
+        const fecha =
+            boton.dataset.fecha;
+
+        if(
+            !confirm(
+                "¿Borrar este registro de " +
+                nombre +
+                "?"
+            )
+        ){
+            return;
+        }
+
+        const historial =
+            leerHistorial();
+
+        if(
+            !Array.isArray(
+                historial[nombre]
+            )
+        ){
+            return;
+        }
+
+        historial[nombre] =
+            historial[nombre]
+            .filter(registro =>
+                registro.fecha !== fecha
+            );
+
+        if(
+            !historial[nombre].length
+        ){
+
+            delete historial[nombre];
+
+        }
+
+        guardarHistorial(
+            historial
+        );
+
+        actualizarSelectorHistorial();
+
+        mostrarHistorialEjercicio(
+            nombre
+        );
+
+    }
+);   
     
 function updateProgress(){
+
+ 
 
     actualizarDiasCompletos();
 
@@ -2312,12 +2907,34 @@ async function resetData(){
 
     const prs = campoPR ? campoPR.value : "";
 
+    const campoHistorial =
+    document.getElementById(
+        "historialData"
+    );
+
+const historial =
+    campoHistorial
+        ? campoHistorial.value
+        : "";
+
     localStorage.clear();
 
-    if(prs){
-        localStorage.setItem("prData", prs);
-    }
+ if(prs){
+    localStorage.setItem(
+        "prData",
+        prs
+    );
+}
 
+if(historial){
+
+    localStorage.setItem(
+        "historialData",
+        historial
+    );
+
+}
+    
     try{
 
         if(
@@ -2333,7 +2950,20 @@ async function resetData(){
                     "principal"
                 ),
                 {
-                    inputs: prs ? { prData: prs } : {},
+                    inputs: {
+    ...(prs
+        ? { prData: prs }
+        : {}
+    ),
+
+    ...(historial
+        ? {
+            historialData:
+                historial
+        }
+        : {}
+    )
+},
                     actualizado:
                         new Date().toISOString()
                 }
