@@ -26,9 +26,9 @@ h1{
 }
 
 .container{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
-    gap:20px;
+    display:block;
+    width:100%;
+    min-width:0;
 }
 
 .card{
@@ -537,6 +537,54 @@ th{
 
     }
 
+    .workout-day{
+    width:100%;
+    min-width:0;
+    overflow:hidden;
+}
+
+.workout-day .exercise{
+    display:grid;
+    grid-template-columns:
+        28px
+        minmax(0,1fr)
+        72px
+        64px;
+
+    gap:8px;
+    align-items:center;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    margin:8px 0;
+}
+
+.workout-day .exercise-select{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+}
+
+.workout-day .series{
+    width:72px;
+    min-width:72px;
+}
+
+.workout-day .exercise-data{
+    display:flex;
+    width:64px;
+    min-width:64px;
+    align-items:center;
+    justify-content:center;
+}
+
+.workout-day .weight{
+    width:60px;
+    max-width:60px;
+}
+
    .exercise-data{
 
     display:flex;
@@ -782,73 +830,83 @@ th{
     
 <!-- DIA 1 -->
 
-<div class="card workout-day"
-     id="dia1">
-<h2>Día 1 - Pecho + Tríceps</h2>
+<div class="card workout-day" id="dia1">
 
-<div class="header-row">
+    <h2>Día 1 - Pecho + Tríceps</h2>
 
-    <div></div>
-
-    <div></div>
-
-    <span>Series</span>
-
-    <span>Peso</span>
-
-<div class="header-row">
-    <div></div>
-    <div>Ejercicio</div>
-    <div>Series</div>
-    <div>Peso</div>
-</div>
-
-<div class="exercise">
-    <input type="checkbox">
-    <label>Press banca</label>
-    <div class="exercise-data">
-        <input class="weight" placeholder="Peso">
+    <div class="header-row">
+        <div></div>
+        <div>Ejercicio</div>
+        <div>Series</div>
+        <div>Peso</div>
     </div>
-</div>
 
-<div class="exercise">
-    <input type="checkbox">
-    <label>Press inclinado mancuernas</label>
-    <div class="exercise-data">
-        <input class="weight" placeholder="Peso">
-    </div>
-</div>
+    <div class="exercise">
+        <input type="checkbox">
+        <label>Press banca</label>
 
-<div class="exercise">
-    <input type="checkbox">
-    <label>Press máquina</label>
-    <div class="exercise-data">
-        <input class="weight" placeholder="Peso">
+        <div class="exercise-data">
+            <input
+                class="weight"
+                placeholder="Peso">
+        </div>
     </div>
-</div>
 
-<div class="exercise">
-    <input type="checkbox">
-    <label>Aperturas polea</label>
-    <div class="exercise-data">
-        <input class="weight" placeholder="Peso">
-    </div>
-</div>
+    <div class="exercise">
+        <input type="checkbox">
+        <label>Press inclinado mancuernas</label>
 
-<div class="exercise">
-    <input type="checkbox">
-    <label>Tríceps cuerda</label>
-    <div class="exercise-data">
-        <input class="weight" placeholder="Peso">
+        <div class="exercise-data">
+            <input
+                class="weight"
+                placeholder="Peso">
+        </div>
     </div>
-</div>
 
-<div class="exercise">
-    <input type="checkbox">
-    <label>Extensión tríceps sobre cabeza</label>
-    <div class="exercise-data">
-        <input class="weight" placeholder="Peso">
+    <div class="exercise">
+        <input type="checkbox">
+        <label>Press máquina</label>
+
+        <div class="exercise-data">
+            <input
+                class="weight"
+                placeholder="Peso">
+        </div>
     </div>
+
+    <div class="exercise">
+        <input type="checkbox">
+        <label>Aperturas polea</label>
+
+        <div class="exercise-data">
+            <input
+                class="weight"
+                placeholder="Peso">
+        </div>
+    </div>
+
+    <div class="exercise">
+        <input type="checkbox">
+        <label>Tríceps cuerda</label>
+
+        <div class="exercise-data">
+            <input
+                class="weight"
+                placeholder="Peso">
+        </div>
+    </div>
+
+    <div class="exercise">
+        <input type="checkbox">
+        <label>Extensión tríceps sobre cabeza</label>
+
+        <div class="exercise-data">
+            <input
+                class="weight"
+                placeholder="Peso">
+        </div>
+    </div>
+
 </div>
 
 <!-- DIA 2 -->
