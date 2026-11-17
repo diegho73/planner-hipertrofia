@@ -376,6 +376,61 @@ progress{
         0 6px 10px rgba(0,0,0,.45);
 }
 
+.dark .exercise-select,
+.dark .series,
+.dark #historialEjercicio{
+    background:linear-gradient(
+        180deg,
+        #333a46 0%,
+        #222832 100%
+    );
+
+    color:#e7ecf5;
+
+    border:1px solid #4e5868;
+    border-radius:8px;
+
+    box-shadow:
+        0 3px 0 #11161e,
+        0 4px 8px rgba(0,0,0,.35);
+
+    cursor:pointer;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease,
+        border-color .12s ease;
+}
+
+.dark .exercise-select:active,
+.dark .series:active,
+.dark #historialEjercicio:active{
+    transform:translateY(2px);
+
+    box-shadow:
+        0 1px 0 #11161e,
+        0 2px 4px rgba(0,0,0,.3);
+}
+
+.dark .exercise-select:focus,
+.dark .series:focus,
+.dark #historialEjercicio:focus{
+    outline:none;
+
+    border-color:#4169b7;
+
+    box-shadow:
+        0 3px 0 #071a3d,
+        0 0 0 2px rgba(65,105,183,.35);
+}    
+
+.dark .exercise-select option,
+.dark .series option,
+.dark #historialEjercicio option{
+    background:#222832;
+    color:#ffffff;
+}
+    
 .dark .tab-btn.active{
     background:linear-gradient(
         180deg,
