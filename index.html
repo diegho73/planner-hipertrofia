@@ -1961,6 +1961,9 @@ function actualizarPanelPR(){
 
 }
 
+    window.actualizarPanelPR =
+    actualizarPanelPR;
+
 document.addEventListener("change", e => {
 
     const objetivo = e.target;
@@ -1980,8 +1983,6 @@ document.addEventListener("change", e => {
    if(fila){
 
     revisarPR(fila);
-
-    registrarHistorial(fila);
 
 }
 
@@ -2263,6 +2264,8 @@ function actualizarSelectorHistorial(){
 
 }
 
+window.actualizarSelectorHistorial =
+    actualizarSelectorHistorial;  
 
 function mostrarHistorialEjercicio(
     nombre
@@ -3181,6 +3184,7 @@ const firebaseConfig = {
 
 const app =
     initializeApp(firebaseConfig);
+    let firebaseCargado = false;
 
 const db =
     getFirestore(app);
@@ -3195,8 +3199,18 @@ window.setDoc = setDoc;
 
 async function guardarEnFirebase(){
 
-    const datos = {};
+    if(!firebaseCargado){
 
+        console.log(
+            "Guardado omitido: Firebase todavía está cargando."
+        );
+
+        return;
+
+    }
+
+    const datos = {};
+    
     document
         .querySelectorAll(
             "input[id], select[id]"
@@ -3209,6 +3223,36 @@ async function guardarEnFirebase(){
                     : campo.value;
 
         });
+
+        const prLocal =
+        localStorage.getItem(
+            "prData"
+        );
+
+    const historialLocal =
+        localStorage.getItem(
+            "historialData"
+        );
+
+    if(
+        !datos.prData &&
+        prLocal
+    ){
+
+        datos.prData =
+            prLocal;
+
+    }
+
+    if(
+        !datos.historialData &&
+        historialLocal
+    ){
+
+        datos.historialData =
+            historialLocal;
+
+    }
 
     try{
 
@@ -3255,7 +3299,11 @@ async function cargarDesdeFirebase(){
             );
 
         if(!snap.exists()){
+
+            firebaseCargado = true;
+
             return;
+
         }
 
         const datos =
@@ -3285,11 +3333,38 @@ async function cargarDesdeFirebase(){
 
             });
 
+        /*
+         * Se habilita el guardado recién después
+         * de terminar de cargar todos los datos.
+         */
+
+        firebaseCargado = true;
+
         if(
             typeof window.updateProgress
             === "function"
         ){
+
             window.updateProgress();
+
+        }
+
+        if(
+            typeof window.actualizarPanelPR
+            === "function"
+        ){
+
+            window.actualizarPanelPR();
+
+        }
+
+        if(
+            typeof window.actualizarSelectorHistorial
+            === "function"
+        ){
+
+            window.actualizarSelectorHistorial();
+
         }
 
     }
@@ -3300,10 +3375,14 @@ async function cargarDesdeFirebase(){
             error
         );
 
+        /*
+         * No habilitamos el guardado si la carga
+         * falló, para evitar sobrescribir Firebase.
+         */
+
     }
 
 }
-
 
 /* EXPONER FUNCIONES AL SCRIPT NORMAL */
 
