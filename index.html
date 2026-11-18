@@ -312,9 +312,92 @@ h1{
 }
 
 progress{
+    display:block;
+
     width:100%;
-    height:25px;
+    height:20px;
+
+    overflow:hidden;
+
+    appearance:none;
+    -webkit-appearance:none;
+
+    border:none;
+    border-radius:10px;
+
+    background:#d9dfeb;
+
+    box-shadow:
+        inset 0 2px 5px rgba(0,0,0,.25),
+        0 3px 0 #a0abc0,
+        0 5px 10px rgba(0,0,0,.12);
 }
+
+progress::-webkit-progress-bar{
+    background:linear-gradient(
+        180deg,
+        #e4e9f2 0%,
+        #cdd5e2 100%
+    );
+
+    border-radius:10px;
+}
+
+progress::-webkit-progress-value{
+    background:linear-gradient(
+        180deg,
+        #3f6fc4 0%,
+        #0b2c6b 100%
+    );
+
+    border-radius:10px;
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,.3);
+}
+
+progress::-moz-progress-bar{
+    background:linear-gradient(
+        180deg,
+        #3f6fc4 0%,
+        #0b2c6b 100%
+    );
+
+    border-radius:10px;
+}
+
+.dark progress{
+    background:#171c24;
+
+    box-shadow:
+        inset 0 2px 5px rgba(0,0,0,.7),
+        0 3px 0 #0c1016,
+        0 5px 10px rgba(0,0,0,.4);
+}
+
+.dark progress::-webkit-progress-bar{
+    background:linear-gradient(
+        180deg,
+        #303845 0%,
+        #1c222c 100%
+    );
+}
+
+.dark progress::-webkit-progress-value{
+    background:linear-gradient(
+        180deg,
+        #4777cc 0%,
+        #173b83 100%
+    );
+}
+
+.dark progress::-moz-progress-bar{
+    background:linear-gradient(
+        180deg,
+        #4777cc 0%,
+        #173b83 100%
+    );
+}    
 
 .dark{
     background:#121212;
@@ -345,15 +428,36 @@ progress{
 
 .dark .card,
 .dark .summary,
-.dark .targets,
-.dark .kpi{
-
+.dark .targets{
     background:#1e1e1e;
     color:#ffffff;
     border-color:#444;
-
 }
 
+.dark .kpi{
+    background:linear-gradient(
+        180deg,
+        #333a46 0%,
+        #222832 100%
+    );
+
+    color:#ffffff;
+
+    border-color:#4e5868;
+
+    box-shadow:
+        0 5px 0 #11161e,
+        0 9px 16px rgba(0,0,0,.42);
+}
+
+.dark .kpi h3{
+    color:#b9c4d4;
+}
+
+.dark .kpi span{
+    color:#ffffff;
+}
+    
 .dark h1,
 .dark h2,
 .dark h3{
@@ -458,6 +562,44 @@ progress{
         0 6px 12px rgba(0,0,0,.5);
 }
 
+.dark .action-primary{
+    background:linear-gradient(
+        180deg,
+        #333a46 0%,
+        #222832 100%
+    );
+
+    color:#e7ecf5;
+
+    border-color:#4e5868;
+
+    box-shadow:
+        0 4px 0 #11161e,
+        0 7px 12px rgba(0,0,0,.45);
+}
+
+.dark .action-primary:active{
+    box-shadow:
+        0 1px 0 #11161e,
+        0 3px 5px rgba(0,0,0,.35);
+}
+
+.dark .action-danger{
+    background:linear-gradient(
+        180deg,
+        #d84a4a 0%,
+        #8f1717 100%
+    );
+
+    color:#ffffff;
+
+    border-color:#e06060;
+
+    box-shadow:
+        0 4px 0 #550b0b,
+        0 7px 12px rgba(0,0,0,.45);
+}
+    
 .dark table{
 
     background:#1e1e1e;
@@ -844,10 +986,82 @@ th{
 
     }
 
-    .actions{
-        display:flex;
-        flex-direction:column;
-    }
+  .actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+
+    margin:18px 0 24px;
+}
+
+    .action-btn{
+    position:relative;
+
+    min-width:170px;
+    min-height:46px;
+
+    padding:10px 18px;
+
+    border:1px solid #aab6cc;
+    border-radius:10px;
+
+    font-size:14px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease,
+        filter .12s ease;
+}
+
+.action-btn:active{
+    transform:translateY(3px);
+}
+
+.action-primary{
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #e8edf7 100%
+    );
+
+    color:#0b2c6b;
+
+    box-shadow:
+        0 4px 0 #8a98ae,
+        0 7px 12px rgba(0,0,0,.16);
+}
+
+.action-primary:active{
+    box-shadow:
+        0 1px 0 #8a98ae,
+        0 3px 5px rgba(0,0,0,.14);
+}
+
+.action-danger{
+    background:linear-gradient(
+        180deg,
+        #e85151 0%,
+        #b71c1c 100%
+    );
+
+    color:#ffffff;
+
+    border-color:#8e1515;
+
+    box-shadow:
+        0 4px 0 #7f1111,
+        0 7px 12px rgba(183,28,28,.25);
+}
+
+.action-danger:active{
+    box-shadow:
+        0 1px 0 #7f1111,
+        0 3px 5px rgba(183,28,28,.2);
+}
 
     button{
         width:100%;
@@ -891,15 +1105,52 @@ th{
 }
 
 .kpi{
+    position:relative;
+
     min-width:0;
-    width:100%;
-    padding:12px 8px;
-    overflow:visible;
+
+    padding:16px 14px;
+
+    text-align:center;
+
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #eef2f8 100%
+    );
+
+    border:1px solid #b5c0d3;
+    border-radius:12px;
+
+    box-shadow:
+        0 5px 0 #a0abc0,
+        0 9px 16px rgba(0,0,0,.14);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
 }
 
 .kpi h3{
+    margin:0 0 9px;
+
+    color:#526174;
+
     font-size:14px;
+    font-weight:700;
+
     line-height:1.2;
+}
+
+    .kpi span{
+    display:block;
+
+    color:#0b2c6b;
+
+    font-size:30px;
+    font-weight:800;
+
+    line-height:1.1;
 }
 
     .fecha-rutina{
@@ -990,13 +1241,27 @@ th{
 
 <h1>💪 RUTINA SEMANAL </h1>
 
-<button id="darkModeBtn">
-    🌙 Modo oscuro
-</button>
-    
-<button onclick="resetData()">
-    🗑 Borrar datos
-</button>
+<div class="actions">
+
+    <button
+        type="button"
+        id="darkModeBtn"
+        class="action-btn action-primary">
+
+        🌙 Modo oscuro
+
+    </button>
+
+    <button
+        type="button"
+        class="action-btn action-danger"
+        onclick="resetData()">
+
+        🗑 Borrar datos
+
+    </button>
+
+</div>
     
 
 </div>
