@@ -489,6 +489,72 @@ progress::-moz-progress-bar{
         0 6px 10px rgba(0,0,0,.45);
 }
 
+.dark .personal-panel{
+    background:linear-gradient(
+        180deg,
+        #333a46 0%,
+        #222832 100%
+    );
+
+    border-color:#4e5868;
+
+    box-shadow:
+        0 5px 0 #11161e,
+        0 9px 16px rgba(0,0,0,.42);
+}
+
+.dark .personal-panel > summary{
+    color:#ffffff;
+}
+
+.dark .personal-panel[open] > summary{
+    border-bottom-color:#4e5868;
+}
+
+.dark .personal-field label,
+.dark .input-unit span{
+    color:#b9c4d4;
+}
+
+.dark .personal-field input,
+.dark .personal-field select,
+.dark .personal-field textarea{
+    background:linear-gradient(
+        180deg,
+        #333a46 0%,
+        #222832 100%
+    );
+
+    color:#e7ecf5;
+
+    border-color:#4e5868;
+
+    box-shadow:
+        0 3px 0 #11161e,
+        0 5px 9px rgba(0,0,0,.35);
+}
+
+.dark .personal-field input:focus,
+.dark .personal-field select:focus,
+.dark .personal-field textarea:focus{
+    border-color:#4169b7;
+
+    box-shadow:
+        0 3px 0 #071a3d,
+        0 0 0 2px rgba(65,105,183,.35);
+}
+
+.dark .personal-field input::placeholder,
+.dark .personal-field textarea::placeholder{
+    color:#aeb8c8;
+    opacity:1;
+}
+
+.dark .personal-field select option{
+    background:#222832;
+    color:#ffffff;
+}    
+
 .dark .exercise-select,
 .dark .series,
 .dark .weight,
@@ -839,6 +905,138 @@ th{
     border-bottom-color:#444;
 }
 
+  .personal-panel{
+    margin:20px 0;
+
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #eef2f8 100%
+    );
+
+    border:1px solid #b5c0d3;
+    border-radius:12px;
+
+    box-shadow:
+        0 5px 0 #a0abc0,
+        0 9px 16px rgba(0,0,0,.14);
+
+    overflow:hidden;
+}
+
+.personal-panel > summary{
+    padding:15px 16px;
+
+    cursor:pointer;
+
+    color:#0b2c6b;
+
+    font-size:17px;
+    font-weight:800;
+
+    user-select:none;
+}
+
+.personal-panel[open] > summary{
+    border-bottom:
+        1px solid rgba(0,0,0,.1);
+}
+
+.personal-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap:14px;
+
+    padding:16px;
+}
+
+.personal-field{
+    min-width:0;
+}
+
+.personal-full{
+    grid-column:1 / -1;
+}
+
+.personal-field label{
+    display:block;
+
+    margin-bottom:6px;
+
+    color:#526174;
+
+    font-size:13px;
+    font-weight:700;
+}
+
+.personal-field input,
+.personal-field select,
+.personal-field textarea{
+    width:100%;
+    min-width:0;
+
+    padding:9px 10px;
+
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #e8edf7 100%
+    );
+
+    color:#0b2c6b;
+
+    border:1px solid #aab6cc;
+    border-radius:8px;
+
+    box-shadow:
+        0 3px 0 #8a98ae,
+        0 5px 9px rgba(0,0,0,.12);
+
+    font-family:inherit;
+    font-size:14px;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease,
+        border-color .12s ease;
+}
+
+.personal-field textarea{
+    resize:vertical;
+    min-height:78px;
+}
+
+.personal-field input:focus,
+.personal-field select:focus,
+.personal-field textarea:focus{
+    outline:none;
+
+    border-color:#4169b7;
+
+    box-shadow:
+        0 3px 0 #173b83,
+        0 0 0 2px rgba(65,105,183,.25);
+}
+
+.input-unit{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:7px;
+    align-items:center;
+}
+
+.input-unit span{
+    min-width:38px;
+
+    color:#526174;
+
+    font-size:13px;
+    font-weight:700;
+}  
+
     
 @media (max-width:768px){
 
@@ -901,9 +1099,9 @@ th{
     width:100%;
     min-width:0;
     overflow:hidden;
-}
+    }
 
-.workout-day .exercise{
+    .workout-day .exercise{
     display:grid;
     grid-template-columns:
         28px
@@ -919,31 +1117,31 @@ th{
     min-width:0;
 
     margin:8px 0;
-}
+    }
 
-.workout-day .exercise-select{
+    .workout-day .exercise-select{
     width:100%;
     min-width:0;
     max-width:100%;
-}
+    }
 
-.workout-day .series{
+    .workout-day .series{
     width:72px;
     min-width:72px;
-}
+    }
 
-.workout-day .exercise-data{
+    .workout-day .exercise-data{
     display:flex;
     width:64px;
     min-width:64px;
     align-items:center;
     justify-content:center;
-}
+    }
 
-.workout-day .weight{
+    .workout-day .weight{
     width:60px;
     max-width:60px;
-}
+    }
 
    .exercise-data{
 
@@ -1216,6 +1414,21 @@ th{
 #ejerciciosCompletados{
     font-size:26px;
 }
+
+ .personal-grid{
+    grid-template-columns:1fr;
+    gap:12px;
+    padding:14px;
+}
+
+.personal-full{
+    grid-column:auto;
+}
+
+.personal-panel > summary{
+    padding:14px;
+    font-size:16px;
+}   
     
 }
     
@@ -1266,14 +1479,250 @@ th{
 
 </div>
 
-<div class="targets">
-<h3>🎯 Objetivos</h3>
+<details class="personal-panel">
 
-<p><strong>Proteína:</strong> 112 a 154 g/día</p>
-<p><strong>Creatina:</strong> 5 g/día</p>
-<p><strong>Sueño:</strong> 7 a 9 horas</p>
+    <summary>
+        👤 Datos personales
+    </summary>
 
-</div>
+    <div class="personal-grid">
+
+        <div class="personal-field personal-full">
+
+            <label for="nombreApellido">
+                Nombre y apellido
+            </label>
+
+            <input
+                type="text"
+                id="nombreApellido"
+                placeholder="Nombre y apellido"
+                autocomplete="name">
+
+        </div>
+
+
+        <div class="personal-field">
+
+            <label for="edad">
+                Edad
+            </label>
+
+            <div class="input-unit">
+
+                <input
+                    type="number"
+                    id="edad"
+                    placeholder="Edad"
+                    min="14"
+                    max="100"
+                    step="1">
+
+                <span>años</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="personal-field">
+
+            <label for="pesoCorporal">
+                Peso actual
+            </label>
+
+            <div class="input-unit">
+
+                <input
+                    type="number"
+                    id="pesoCorporal"
+                    placeholder="Peso"
+                    min="30"
+                    max="300"
+                    step="0.1">
+
+                <span>kg</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="personal-field">
+
+            <label for="alturaCorporal">
+                Altura
+            </label>
+
+            <div class="input-unit">
+
+                <input
+                    type="number"
+                    id="alturaCorporal"
+                    placeholder="Altura"
+                    min="120"
+                    max="230"
+                    step="1">
+
+                <span>cm</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="personal-field">
+
+            <label for="experienciaEntrenamiento">
+                Experiencia
+            </label>
+
+            <select id="experienciaEntrenamiento">
+
+                <option value="">
+                    Seleccionar
+                </option>
+
+                <option value="principiante">
+                    Menos de 1 año
+                </option>
+
+                <option value="intermedio">
+                    Entre 1 y 3 años
+                </option>
+
+                <option value="avanzado">
+                    Más de 3 años
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="personal-field">
+
+            <label for="objetivoPrincipal">
+                Objetivo principal
+            </label>
+
+            <select id="objetivoPrincipal">
+
+                <option value="">
+                    Seleccionar
+                </option>
+
+                <option value="hipertrofia">
+                    Hipertrofia
+                </option>
+
+                <option value="fuerza">
+                    Fuerza
+                </option>
+
+                <option value="recomposicion">
+                    Recomposición corporal
+                </option>
+
+                <option value="perdida-grasa">
+                    Pérdida de grasa
+                </option>
+
+                <option value="mantenimiento">
+                    Mantenimiento
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="personal-field">
+
+            <label for="diasEntrenamiento">
+                Días disponibles
+            </label>
+
+            <select id="diasEntrenamiento">
+
+                <option value="">
+                    Seleccionar
+                </option>
+
+                <option value="3">
+                    3 días por semana
+                </option>
+
+                <option value="4">
+                    4 días por semana
+                </option>
+
+                <option value="5">
+                    5 días por semana
+                </option>
+
+                <option value="6">
+                    6 días por semana
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="personal-field">
+
+            <label for="horasSueno">
+                Sueño promedio
+            </label>
+
+            <div class="input-unit">
+
+                <input
+                    type="number"
+                    id="horasSueno"
+                    placeholder="Horas"
+                    min="3"
+                    max="12"
+                    step="0.5">
+
+                <span>h</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="personal-field personal-full">
+
+            <label for="prioridadesMusculares">
+                Prioridades musculares
+            </label>
+
+            <input
+                type="text"
+                id="prioridadesMusculares"
+                placeholder="Ej.: hombros, bíceps y tríceps">
+
+        </div>
+
+
+        <div class="personal-field personal-full">
+
+            <label for="observacionesEntrenamiento">
+                Observaciones
+            </label>
+
+            <textarea
+                id="observacionesEntrenamiento"
+                rows="3"
+                placeholder="Ej.: equipamiento disponible, preferencias o movimientos que evitás"></textarea>
+
+        </div>
+
+    </div>
+
+</details>
 
 <div class="dashboard">
 
@@ -3042,9 +3491,9 @@ document.addEventListener("DOMContentLoaded", () => {
     asignarIdsEstables();
 
     document
-        .querySelectorAll(
-            "input[id], select[id]"
-        )
+      .querySelectorAll(
+          "input[id], select[id], textarea[id]"
+      )
         .forEach(campo => {
 
             const saved =
@@ -3506,8 +3955,8 @@ async function guardarEnFirebase(){
     
     document
         .querySelectorAll(
-            "input[id], select[id]"
-        )
+            "input[id], select[id], textarea[id]"
+         )
         .forEach(campo => {
 
             datos[campo.id] =
