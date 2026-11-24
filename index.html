@@ -181,24 +181,6 @@ h1{
 
 }
 
-<div class="kpi">
-    <h3>📅 Inicio de rutina</h3>
-
-</div>
-
-<div class="kpi">
-    <h3>🔄 Cambio de rutina</h3>
-
-</div>
-
-.targets{
-    margin:20px 0;
-    padding:15px;
-    background:#eaf7ea;
-    border-radius:10px;
-    border:1px solid #4caf50;
-}
-
 .targets{
     margin:20px 0;
     padding:15px;
@@ -303,108 +285,6 @@ h1{
     padding:15px;
 }
 
-progress{
-    display:block;
-
-    width:100%;
-    height:20px;
-
-    overflow:hidden;
-
-    appearance:none;
-    -webkit-appearance:none;
-
-    border:none;
-    border-radius:10px;
-
-    background:#d9dfeb;
-
-    box-shadow:
-        inset 0 2px 5px rgba(0,0,0,.25),
-        0 3px 0 #a0abc0,
-        0 5px 10px rgba(0,0,0,.12);
-}
-
-progress::-webkit-progress-bar{
-    background:linear-gradient(
-        180deg,
-        #e4e9f2 0%,
-        #cdd5e2 100%
-    );
-
-    border-radius:10px;
-}
-
-progress::-webkit-progress-value{
-    background:linear-gradient(
-        180deg,
-        #3f6fc4 0%,
-        #0b2c6b 100%
-    );
-
-    border-radius:10px;
-
-    box-shadow:
-        inset 0 1px 2px rgba(255,255,255,.3);
-}
-
-progress::-moz-progress-bar{
-    background:linear-gradient(
-        180deg,
-        #3f6fc4 0%,
-        #0b2c6b 100%
-    );
-
-    border-radius:10px;
-}
-
-.dark progress{
-    background:#171c24;
-
-    box-shadow:
-        inset 0 2px 5px rgba(0,0,0,.7),
-        0 3px 0 #0c1016,
-        0 5px 10px rgba(0,0,0,.4);
-}
-
-.dark progress::-webkit-progress-bar{
-    background:linear-gradient(
-        180deg,
-        #303845 0%,
-        #1c222c 100%
-    );
-}
-
-.dark progress::-webkit-progress-value{
-    background:linear-gradient(
-        180deg,
-        #4777cc 0%,
-        #173b83 100%
-    );
-}
-
-.dark progress::-moz-progress-bar{
-    background:linear-gradient(
-        180deg,
-        #4777cc 0%,
-        #173b83 100%
-    );
-}    
-
-.dark{
-    background:#121212;
-    color:#ffffff;
-}
-
-.dark .card,
-.dark .summary,
-.dark .targets,
-.dark .kpi{
-    background:#1e1e1e;
-    color:#ffffff;
-    border-color:#444;
-}
-
 .dark .donut{
     background:
         conic-gradient(
@@ -500,14 +380,6 @@ progress::-moz-progress-bar{
 .dark h3{
 
     color:#7fb3ff;
-
-}
-
-.dark input{
-
-    background:#2b2b2b;
-    color:#ffffff;
-    border-color:#555;
 
 }
 
@@ -1074,8 +946,202 @@ th{
     font-weight:700;
 }  
 
-    
+.progress-dashboard{
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+}
 
+.donut-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+
+    gap:12px;
+}
+
+.donut{
+    --progress:0;
+
+    position:relative;
+
+    width:170px;
+    height:170px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:
+        conic-gradient(
+            #0b2c6b
+            calc(var(--progress) * 1%),
+            #d8deea 0
+        );
+
+    box-shadow:
+        0 5px 0 #8a98ae,
+        0 9px 16px rgba(0,0,0,.18),
+        inset 0 1px 3px rgba(255,255,255,.45);
+
+    transition:
+        background .35s ease;
+}
+
+.donut::before{
+    content:"";
+
+    position:absolute;
+
+    width:118px;
+    height:118px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #e8edf7 100%
+    );
+
+    border:1px solid #bac4d5;
+
+    box-shadow:
+        inset 0 2px 6px rgba(0,0,0,.15),
+        0 2px 3px rgba(255,255,255,.5);
+}
+
+.donut-center{
+    position:relative;
+    z-index:1;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    max-width:104px;
+
+    text-align:center;
+}
+
+.donut-center span{
+    color:#0b2c6b;
+
+    font-size:25px;
+    font-weight:800;
+
+    line-height:1.05;
+}
+
+.donut-center small{
+    margin-top:5px;
+
+    color:#66758a;
+
+    font-size:11px;
+    font-weight:700;
+
+    line-height:1.15;
+}
+
+.donut-rutina{
+    background:
+        conic-gradient(
+            #2e7d32
+            calc(var(--progress) * 1%),
+            #d8deea 0
+        );
+}
+
+.routine-dates{
+    width:100%;
+
+    display:grid;
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap:10px;
+
+    margin-top:4px;
+}
+
+.routine-dates label{
+    min-width:0;
+}
+
+.routine-dates label > span{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#526174;
+
+    font-size:11px;
+    font-weight:700;
+
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.routine-dates .fecha-rutina{
+    width:100%;
+    max-width:none;
+
+    margin:0;
+
+    font-size:13px;
+} 
+
+.kpi{
+    position:relative;
+
+    min-width:0;
+
+    padding:16px 14px;
+
+    text-align:center;
+
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #eef2f8 100%
+    );
+
+    border:1px solid #b5c0d3;
+    border-radius:12px;
+
+    box-shadow:
+        0 5px 0 #a0abc0,
+        0 9px 16px rgba(0,0,0,.14);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+.kpi h3{
+    margin:0 0 9px;
+
+    color:#526174;
+
+    font-size:14px;
+    font-weight:700;
+
+    line-height:1.2;
+}
+
+    .kpi span{
+    display:block;
+
+    color:#0b2c6b;
+
+    font-size:30px;
+    font-weight:800;
+
+    line-height:1.1;
+}    
     
 @media (max-width:768px){
 
@@ -1339,220 +1405,7 @@ th{
     grid-template-columns:repeat(2, minmax(0, 1fr));
     gap:10px;
     width:100%;
-}
-
-.progress-dashboard{
-    grid-template-columns:
-        repeat(2, minmax(0,1fr));
-}
-
-.donut-card{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-
-    gap:12px;
-}
-
-.donut{
-    --progress:0;
-
-    position:relative;
-
-    width:170px;
-    height:170px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:50%;
-
-    background:
-        conic-gradient(
-            #0b2c6b
-            calc(var(--progress) * 1%),
-            #d8deea 0
-        );
-
-    box-shadow:
-        0 5px 0 #8a98ae,
-        0 9px 16px rgba(0,0,0,.18),
-        inset 0 1px 3px rgba(255,255,255,.45);
-
-    transition:
-        background .35s ease;
-}
-
-.donut::before{
-    content:"";
-
-    position:absolute;
-
-    width:118px;
-    height:118px;
-
-    border-radius:50%;
-
-    background:linear-gradient(
-        180deg,
-        #ffffff 0%,
-        #e8edf7 100%
-    );
-
-    border:1px solid #bac4d5;
-
-    box-shadow:
-        inset 0 2px 6px rgba(0,0,0,.15),
-        0 2px 3px rgba(255,255,255,.5);
-}
-
-.donut-center{
-    position:relative;
-    z-index:1;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    max-width:104px;
-
-    text-align:center;
-}
-
-.donut-center span{
-    color:#0b2c6b;
-
-    font-size:25px;
-    font-weight:800;
-
-    line-height:1.05;
-}
-
-.donut-center small{
-    margin-top:5px;
-
-    color:#66758a;
-
-    font-size:11px;
-    font-weight:700;
-
-    line-height:1.15;
-}
-
-.donut-rutina{
-    background:
-        conic-gradient(
-            #2e7d32
-            calc(var(--progress) * 1%),
-            #d8deea 0
-        );
-}
-
-.routine-dates{
-    width:100%;
-
-    display:grid;
-    grid-template-columns:
-        repeat(2, minmax(0,1fr));
-
-    gap:10px;
-
-    margin-top:4px;
-}
-
-.routine-dates label{
-    min-width:0;
-}
-
-.routine-dates label > span{
-    display:block;
-
-    margin-bottom:5px;
-
-    color:#526174;
-
-    font-size:11px;
-    font-weight:700;
-
-    text-transform:uppercase;
-    letter-spacing:.5px;
-}
-
-.routine-dates .fecha-rutina{
-    width:100%;
-    max-width:none;
-
-    margin:0;
-
-    font-size:13px;
-}    
-
-.kpi{
-    position:relative;
-
-    min-width:0;
-
-    padding:16px 14px;
-
-    text-align:center;
-
-    background:linear-gradient(
-        180deg,
-        #ffffff 0%,
-        #eef2f8 100%
-    );
-
-    border:1px solid #b5c0d3;
-    border-radius:12px;
-
-    box-shadow:
-        0 5px 0 #a0abc0,
-        0 9px 16px rgba(0,0,0,.14);
-
-    transition:
-        transform .15s ease,
-        box-shadow .15s ease;
-}
-
-.kpi h3{
-    margin:0 0 9px;
-
-    color:#526174;
-
-    font-size:14px;
-    font-weight:700;
-
-    line-height:1.2;
-}
-
-    .kpi span{
-    display:block;
-
-    color:#0b2c6b;
-
-    font-size:30px;
-    font-weight:800;
-
-    line-height:1.1;
-}
-
-    .fecha-rutina{
-    display:block !important;
-    visibility:visible !important;
-    opacity:1 !important;
-
-    width:100% !important;
-    max-width:150px;
-
-    height:40px;
-
-    margin:8px auto 0;
-
-    font-size:14px;
-    text-align:center;
-}
+}  
 
     .fecha-rutina{
     display:block !important;
@@ -1658,6 +1511,8 @@ th{
     font-size:12px;
 }
 
+}   
+
 @media (max-width:380px){
 
     .progress-dashboard{
@@ -1675,8 +1530,6 @@ th{
     }
 
 }    
-    
-}
     
 @media print{
 
@@ -1719,9 +1572,6 @@ th{
         🗑 Borrar datos
 
     </button>
-
-</div>
-    
 
 </div>
 
@@ -1969,6 +1819,85 @@ th{
     </div>
 
 </details>
+
+   <div class="dashboard progress-dashboard">
+
+    <div class="kpi donut-card">
+
+        <h3>✅ Ejercicios completados</h3>
+
+        <div
+            class="donut"
+            id="donutEjercicios"
+            style="--progress:0">
+
+            <div class="donut-center">
+
+                <span id="ejerciciosCompletados">
+                    0 / 39
+                </span>
+
+                <small>ejercicios</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="kpi donut-card">
+
+        <h3>📅 Avance de la rutina</h3>
+
+        <div
+            class="donut donut-rutina"
+            id="donutRutina"
+            style="--progress:0">
+
+            <div class="donut-center">
+
+                <span id="progresoRutina">
+                    0%
+                </span>
+
+                <small id="diasRutina">
+                    Configurá las fechas
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="routine-dates">
+
+            <label>
+
+                <span>Inicio</span>
+
+                <input
+                    type="date"
+                    id="fechaInicioRutina"
+                    class="fecha-rutina">
+
+            </label>
+
+            <label>
+
+                <span>Cambio</span>
+
+                <input
+                    type="date"
+                    id="fechaCambioRutina"
+                    class="fecha-rutina">
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div> 
 
     <div class="tabs">
 
@@ -2833,16 +2762,6 @@ function revisarPR(fila){
 
 }
 
-    if(
-    typeof actualizarSelectorHistorial
-    === "function"
-){
-
-    actualizarSelectorHistorial();
-
-}
-
-
 function actualizarPanelPR(){
 
     const prs = leerPRs();
@@ -3580,36 +3499,39 @@ if(donutEjercicios){
 
 }
 
+if(
+    typeof actualizarPanelPR
+    === "function"
+){
+
+    actualizarPanelPR();
+
+}
+
+if(
+    typeof actualizarSelectorHistorial
+    === "function"
+){
+
+    actualizarSelectorHistorial();
+
+}
+
+if(
+    typeof calcularAvanceRutina
+    === "function"
+){
+
+    calcularAvanceRutina();
+
+}
+
 }
 
 window.updateProgress =
     updateProgress;
 
     function obtenerClaveSemana(){
-
-    const salida =
-        document.getElementById(
-            "semanaActivaTexto"
-        );
-
-    if(!salida){
-        return;
-    }
-
-    const clave =
-        obtenerClaveSemana();
-
-    const partes =
-        clave.split("-");
-
-    salida.textContent =
-        partes[2] +
-        "/" +
-        partes[1] +
-        "/" +
-        partes[0];
-
-}    
 
     const hoy =
         new Date();
@@ -3620,11 +3542,6 @@ window.updateProgress =
         0,
         0
     );
-
-    /*
-     * Convertir domingo 0 en día 7.
-     * La semana comienza el lunes.
-     */
 
     const diaSemana =
         hoy.getDay() || 7;
@@ -3671,11 +3588,6 @@ async function comprobarNuevaSemana(){
         localStorage.getItem(
             "semanaActiva"
         );
-    
-    /*
-     * Primera ejecución:
-     * guardar la semana sin borrar nada.
-     */
 
     if(!semanaGuardada){
 
@@ -3688,10 +3600,6 @@ async function comprobarNuevaSemana(){
 
     }
 
-    /*
-     * Seguimos en la misma semana.
-     */
-
     if(
         semanaGuardada ===
         semanaActual
@@ -3700,11 +3608,6 @@ async function comprobarNuevaSemana(){
         return false;
 
     }
-
-    /*
-     * Nueva semana:
-     * desmarcar únicamente ejercicios.
-     */
 
     document
         .querySelectorAll(
@@ -3744,8 +3647,7 @@ async function comprobarNuevaSemana(){
         === "function"
     ){
 
-        await window
-            .guardarEnFirebase();
+        await window.guardarEnFirebase();
 
     }
 
@@ -3761,6 +3663,194 @@ async function comprobarNuevaSemana(){
 
 window.comprobarNuevaSemana =
     comprobarNuevaSemana;
+
+function calcularAvanceRutina(){
+
+    const inicio =
+        document.getElementById(
+            "fechaInicioRutina"
+        );
+
+    const cambio =
+        document.getElementById(
+            "fechaCambioRutina"
+        );
+
+    const donut =
+        document.getElementById(
+            "donutRutina"
+        );
+
+    const porcentajeTexto =
+        document.getElementById(
+            "progresoRutina"
+        );
+
+    const diasTexto =
+        document.getElementById(
+            "diasRutina"
+        );
+
+    if(
+        !inicio ||
+        !cambio ||
+        !donut ||
+        !porcentajeTexto ||
+        !diasTexto
+    ){
+        return;
+    }
+
+    if(
+        !inicio.value ||
+        !cambio.value
+    ){
+
+        donut.style.setProperty(
+            "--progress",
+            0
+        );
+
+        porcentajeTexto.textContent =
+            "0%";
+
+        diasTexto.textContent =
+            "Configurá las fechas";
+
+        return;
+    }
+
+    const fechaInicio =
+        new Date(
+            inicio.value +
+            "T00:00:00"
+        );
+
+    const fechaCambio =
+        new Date(
+            cambio.value +
+            "T00:00:00"
+        );
+
+    const hoy =
+        new Date();
+
+    hoy.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+    const unDia =
+        1000 * 60 * 60 * 24;
+
+    const diasTotales =
+        Math.round(
+            (
+                fechaCambio -
+                fechaInicio
+            ) /
+            unDia
+        );
+
+    if(diasTotales <= 0){
+
+        donut.style.setProperty(
+            "--progress",
+            0
+        );
+
+        porcentajeTexto.textContent =
+            "0%";
+
+        diasTexto.textContent =
+            "Revisá las fechas";
+
+        return;
+    }
+
+    const diasTranscurridos =
+        Math.floor(
+            (
+                hoy -
+                fechaInicio
+            ) /
+            unDia
+        );
+
+    const porcentaje =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Math.round(
+                    diasTranscurridos /
+                    diasTotales *
+                    100
+                )
+            )
+        );
+
+    donut.style.setProperty(
+        "--progress",
+        porcentaje
+    );
+
+    porcentajeTexto.textContent =
+        porcentaje + "%";
+
+    if(hoy < fechaInicio){
+
+        const diasParaInicio =
+            Math.ceil(
+                (
+                    fechaInicio -
+                    hoy
+                ) /
+                unDia
+            );
+
+        diasTexto.textContent =
+            "Comienza en " +
+            diasParaInicio +
+            (
+                diasParaInicio === 1
+                    ? " día"
+                    : " días"
+            );
+
+    }else if(hoy >= fechaCambio){
+
+        diasTexto.textContent =
+            "Bloque finalizado";
+
+    }else{
+
+        const diasRestantes =
+            Math.ceil(
+                (
+                    fechaCambio -
+                    hoy
+                ) /
+                unDia
+            );
+
+        diasTexto.textContent =
+            diasRestantes +
+            (
+                diasRestantes === 1
+                    ? " día restante"
+                    : " días restantes"
+            );
+
+    }
+
+}
+
+
+window.calcularAvanceRutina =
+    calcularAvanceRutina;    
     
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -3930,116 +4020,39 @@ campo.addEventListener(
 
 });
 
-    updateProgress();
-
-    actualizarSemanaRutina();
-
-});
-
-    function actualizarSemanaRutina(){
-
-    const inicio =
-        document.getElementById(
-            "fechaInicioRutina"
-        );
-
-    const cambio =
-        document.getElementById(
-            "fechaCambioRutina"
-        );
-
-    const salida =
-        document.getElementById(
-            "semanaRutina"
-        );
-
-    if(
-        !inicio ||
-        !cambio ||
-        !salida
-    ){
-        return;
-    }
-
-    if(
-        !inicio.value ||
-        !cambio.value
-    ){
-
-        salida.textContent = "--";
-
-        return;
-    }
-
-    const fechaInicio =
-        new Date(
-            inicio.value + "T00:00:00"
-        );
-
-    const fechaCambio =
-        new Date(
-            cambio.value + "T00:00:00"
-        );
-
-    const hoy =
-        new Date();
-
-    hoy.setHours(
-        0,
-        0,
-        0,
-        0
+const fechaInicio =
+    document.getElementById(
+        "fechaInicioRutina"
     );
 
-    const unDia =
-        1000 * 60 * 60 * 24;
+const fechaCambio =
+    document.getElementById(
+        "fechaCambioRutina"
+    );
 
-    const diasTotales =
-        Math.ceil(
-            (
-                fechaCambio -
-                fechaInicio
-            ) /
-            unDia
-        );
+if(fechaInicio){
 
-    const semanasTotales =
-        Math.max(
-            1,
-            Math.ceil(
-                diasTotales / 7
-            )
-        );
-
-    const diasTranscurridos =
-        Math.floor(
-            (
-                hoy -
-                fechaInicio
-            ) /
-            unDia
-        );
-
-    let semanaActual =
-        Math.floor(
-            diasTranscurridos / 7
-        ) + 1;
-
-    semanaActual =
-        Math.max(
-            1,
-            Math.min(
-                semanaActual,
-                semanasTotales
-            )
-        );
-
-    salida.textContent =
-        semanaActual +
-        " de " +
-        semanasTotales;
+    fechaInicio.addEventListener(
+        "change",
+        calcularAvanceRutina
+    );
 
 }
+
+if(fechaCambio){
+
+    fechaCambio.addEventListener(
+        "change",
+        calcularAvanceRutina
+    );
+
+}
+
+updateProgress();
+
+calcularAvanceRutina();
+
+});
     
 async function resetData(){
 
