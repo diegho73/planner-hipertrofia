@@ -3381,6 +3381,189 @@ if(contadorEjercicios){
 
 window.updateProgress =
     updateProgress;
+
+    function obtenerClaveSemana(){
+
+    function actualizarTextoSemana(){
+
+    const salida =
+        document.getElementById(
+            "semanaActivaTexto"
+        );
+
+    if(!salida){
+        return;
+    }
+
+    const clave =
+        obtenerClaveSemana();
+
+    const partes =
+        clave.split("-");
+
+    salida.textContent =
+        partes[2] +
+        "/" +
+        partes[1] +
+        "/" +
+        partes[0];
+
+}    
+
+    const hoy =
+        new Date();
+
+    hoy.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+    /*
+     * Convertir domingo 0 en día 7.
+     * La semana comienza el lunes.
+     */
+
+    const diaSemana =
+        hoy.getDay() || 7;
+
+    const lunes =
+        new Date(hoy);
+
+    lunes.setDate(
+        hoy.getDate() -
+        diaSemana +
+        1
+    );
+
+    const anio =
+        lunes.getFullYear();
+
+    const mes =
+        String(
+            lunes.getMonth() + 1
+        ).padStart(2, "0");
+
+    const dia =
+        String(
+            lunes.getDate()
+        ).padStart(2, "0");
+
+    return (
+        anio +
+        "-" +
+        mes +
+        "-" +
+        dia
+    );
+
+}
+
+
+async function comprobarNuevaSemana(){
+
+    const semanaActual =
+        obtenerClaveSemana();
+
+    const semanaGuardada =
+        localStorage.getItem(
+            "semanaActiva"
+        );
+
+        actualizarTextoSemana();
+    
+    /*
+     * Primera ejecución:
+     * guardar la semana sin borrar nada.
+     */
+
+    if(!semanaGuardada){
+
+        localStorage.setItem(
+            "semanaActiva",
+            semanaActual
+        );
+
+        return false;
+
+    }
+
+    /*
+     * Seguimos en la misma semana.
+     */
+
+    if(
+        semanaGuardada ===
+        semanaActual
+    ){
+
+        return false;
+
+    }
+
+    /*
+     * Nueva semana:
+     * desmarcar únicamente ejercicios.
+     */
+
+    document
+        .querySelectorAll(
+            '.exercise input[type="checkbox"]'
+        )
+        .forEach(check => {
+
+            check.checked = false;
+
+            if(check.id){
+
+                localStorage.setItem(
+                    check.id,
+                    "false"
+                );
+
+            }
+
+        });
+
+    localStorage.setItem(
+        "semanaActiva",
+        semanaActual
+    );
+
+    if(
+        typeof window.updateProgress
+        === "function"
+    ){
+
+        window.updateProgress();
+
+    }
+
+    if(
+        typeof window.guardarEnFirebase
+        === "function"
+    ){
+
+        await window
+            .guardarEnFirebase();
+
+    }
+
+    console.log(
+        "Nueva semana detectada. " +
+        "Los ejercicios completados fueron reiniciados."
+    );
+
+        actualizarTextoSemana();
+
+    return true;
+
+}
+
+
+window.comprobarNuevaSemana =
+    comprobarNuevaSemana;
     
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -4194,13 +4377,34 @@ window.addEventListener(
     "load",
     async () => {
 
+        /*
+         * Primero recuperar Firebase.
+         */
+
         await cargarDesdeFirebase();
+
+        /*
+         * Después comprobar si comenzó
+         * una semana nueva.
+         */
+
+        if(
+            typeof window.comprobarNuevaSemana
+            === "function"
+        ){
+
+            await window
+                .comprobarNuevaSemana();
+
+        }
 
         if(
             typeof window.updateProgress
             === "function"
         ){
+
             window.updateProgress();
+
         }
 
         window.mostrarDia("dia1");
