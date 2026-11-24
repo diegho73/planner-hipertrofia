@@ -3587,8 +3587,6 @@ window.updateProgress =
 
     function obtenerClaveSemana(){
 
-    function actualizarTextoSemana(){
-
     const salida =
         document.getElementById(
             "semanaActivaTexto"
@@ -3673,8 +3671,6 @@ async function comprobarNuevaSemana(){
         localStorage.getItem(
             "semanaActiva"
         );
-
-        actualizarTextoSemana();
     
     /*
      * Primera ejecución:
@@ -3757,8 +3753,6 @@ async function comprobarNuevaSemana(){
         "Nueva semana detectada. " +
         "Los ejercicios completados fueron reiniciados."
     );
-
-        actualizarTextoSemana();
 
     return true;
 
