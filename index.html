@@ -184,19 +184,11 @@ h1{
 <div class="kpi">
     <h3>📅 Inicio de rutina</h3>
 
-    <input
-        type="date"
-        id="fechaInicioRutina"
-        class="fecha-rutina">
 </div>
 
 <div class="kpi">
     <h3>🔄 Cambio de rutina</h3>
 
-    <input
-        type="date"
-        id="fechaCambioRutina"
-        class="fecha-rutina">
 </div>
 
 .targets{
@@ -412,6 +404,51 @@ progress::-moz-progress-bar{
     color:#ffffff;
     border-color:#444;
 }
+
+.dark .donut{
+    background:
+        conic-gradient(
+            #4777cc
+            calc(var(--progress) * 1%),
+            #171c24 0
+        );
+
+    box-shadow:
+        0 5px 0 #11161e,
+        0 9px 16px rgba(0,0,0,.48),
+        inset 0 1px 3px rgba(255,255,255,.12);
+}
+
+.dark .donut-rutina{
+    background:
+        conic-gradient(
+            #43a047
+            calc(var(--progress) * 1%),
+            #171c24 0
+        );
+}
+
+.dark .donut::before{
+    background:linear-gradient(
+        180deg,
+        #333a46 0%,
+        #222832 100%
+    );
+
+    border-color:#4e5868;
+
+    box-shadow:
+        inset 0 2px 6px rgba(0,0,0,.65);
+}
+
+.dark .donut-center span{
+    color:#ffffff;
+}
+
+.dark .donut-center small,
+.dark .routine-dates label > span{
+    color:#b9c4d4;
+}    
 
 .dark input{
     background:#2b2b2b;
@@ -1038,6 +1075,8 @@ th{
 }  
 
     
+
+    
 @media (max-width:768px){
 
     
@@ -1302,6 +1341,154 @@ th{
     width:100%;
 }
 
+.progress-dashboard{
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+}
+
+.donut-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+
+    gap:12px;
+}
+
+.donut{
+    --progress:0;
+
+    position:relative;
+
+    width:170px;
+    height:170px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:
+        conic-gradient(
+            #0b2c6b
+            calc(var(--progress) * 1%),
+            #d8deea 0
+        );
+
+    box-shadow:
+        0 5px 0 #8a98ae,
+        0 9px 16px rgba(0,0,0,.18),
+        inset 0 1px 3px rgba(255,255,255,.45);
+
+    transition:
+        background .35s ease;
+}
+
+.donut::before{
+    content:"";
+
+    position:absolute;
+
+    width:118px;
+    height:118px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #e8edf7 100%
+    );
+
+    border:1px solid #bac4d5;
+
+    box-shadow:
+        inset 0 2px 6px rgba(0,0,0,.15),
+        0 2px 3px rgba(255,255,255,.5);
+}
+
+.donut-center{
+    position:relative;
+    z-index:1;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    max-width:104px;
+
+    text-align:center;
+}
+
+.donut-center span{
+    color:#0b2c6b;
+
+    font-size:25px;
+    font-weight:800;
+
+    line-height:1.05;
+}
+
+.donut-center small{
+    margin-top:5px;
+
+    color:#66758a;
+
+    font-size:11px;
+    font-weight:700;
+
+    line-height:1.15;
+}
+
+.donut-rutina{
+    background:
+        conic-gradient(
+            #2e7d32
+            calc(var(--progress) * 1%),
+            #d8deea 0
+        );
+}
+
+.routine-dates{
+    width:100%;
+
+    display:grid;
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap:10px;
+
+    margin-top:4px;
+}
+
+.routine-dates label{
+    min-width:0;
+}
+
+.routine-dates label > span{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#526174;
+
+    font-size:11px;
+    font-weight:700;
+
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.routine-dates .fecha-rutina{
+    width:100%;
+    max-width:none;
+
+    margin:0;
+
+    font-size:13px;
+}    
+
 .kpi{
     position:relative;
 
@@ -1429,6 +1616,65 @@ th{
     padding:14px;
     font-size:16px;
 }   
+
+.progress-dashboard{
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+}
+
+.donut-card{
+    padding:12px 6px;
+}
+
+.donut{
+    width:132px;
+    height:132px;
+}
+
+.donut::before{
+    width:90px;
+    height:90px;
+}
+
+.donut-center{
+    max-width:82px;
+}
+
+.donut-center span{
+    font-size:19px;
+}
+
+.donut-center small{
+    font-size:9px;
+}
+
+.routine-dates{
+    grid-template-columns:1fr;
+    gap:8px;
+}
+
+.routine-dates .fecha-rutina{
+    height:36px;
+    font-size:12px;
+}
+
+@media (max-width:380px){
+
+    .progress-dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .donut{
+        width:150px;
+        height:150px;
+    }
+
+    .donut::before{
+        width:104px;
+        height:104px;
+    }
+
+}    
     
 }
     
@@ -1723,53 +1969,6 @@ th{
     </div>
 
 </details>
-
-<div class="dashboard">
-
-   <div class="kpi">
-    <h3>✅ Ejercicios completados</h3>
-
-    <span id="ejerciciosCompletados">
-        0 / 0
-    </span>
-</div>
-
-    <div class="kpi">
-        <h3>📈 Progreso Semanal</h3>
-        <span id="progressText">0</span>
-    </div>
-    
-    <div class="kpi">
-    <h3>📅 Inicio de rutina</h3>
-
-    <input
-        type="date"
-        id="fechaInicioRutina"
-        class="fecha-rutina">
-</div>
-
-<div class="kpi">
-    <h3>🔄 Cambio de rutina</h3>
-
-    <input
-        type="date"
-        id="fechaCambioRutina"
-        class="fecha-rutina">
-</div>
-    
-</div>
-
-</div>
-
-<div class="summary">
-
-    <progress
-        id="progressBar"
-        value="0"
-        max="100">
-    </progress>
-
-</div>
 
     <div class="tabs">
 
@@ -3367,15 +3566,19 @@ if(contadorEjercicios){
             )
             : 0;
 
+    const donutEjercicios =
     document.getElementById(
-        "progressBar"
-    ).value =
-        percent;
+        "donutEjercicios"
+    );
 
-    document.getElementById(
-        "progressText"
-    ).textContent =
-        percent + "%";
+if(donutEjercicios){
+
+    donutEjercicios.style.setProperty(
+        "--progress",
+        percent
+    );
+
+}
 
 }
 
