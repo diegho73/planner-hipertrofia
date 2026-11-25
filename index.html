@@ -1091,8 +1091,8 @@ th{
 }  
 
 .progress-dashboard{
-    grid-template-columns:
-        repeat(2, minmax(0,1fr));
+    grid-template-columns:1fr;
+    gap:16px;
 }
 
 .donut-card{
@@ -1551,22 +1551,6 @@ th{
     width:100%;
 }  
 
-    .fecha-rutina{
-    display:block !important;
-    visibility:visible !important;
-    opacity:1 !important;
-
-    width:100% !important;
-    max-width:150px;
-
-    height:40px;
-
-    margin:8px auto 0;
-
-    font-size:14px;
-    text-align:center;
-}
-
 .historial-controles{
     display:block;
 }
@@ -1620,7 +1604,13 @@ th{
 }
 
 .donut-card{
-    padding:12px 6px;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    padding:14px 10px;
+
+    overflow:hidden;
 }
 
 .donut{
@@ -1646,14 +1636,23 @@ th{
 }
 
 .routine-dates{
-    grid-template-columns:1fr;
+    width:100%;
+    max-width:100%;
+
+    display:grid;
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
     gap:8px;
 }
 
-.routine-dates .fecha-rutina{
-    height:36px;
-    font-size:12px;
+.routine-dates label{
+    display:block;
+    min-width:0;
+    max-width:100%;
 }
+
+.routine-dates .fecha-rutina
 
 .semana-dias{
     grid-template-columns:
