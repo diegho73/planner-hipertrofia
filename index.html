@@ -1601,6 +1601,12 @@ th{
 .progress-dashboard{
     grid-template-columns:
         repeat(2, minmax(0,1fr));
+
+    gap:10px;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
 }
 
 .donut-card{
@@ -1608,7 +1614,7 @@ th{
     max-width:100%;
     min-width:0;
 
-    padding:14px 10px;
+    padding:12px 6px;
 
     overflow:hidden;
 }
@@ -1636,23 +1642,57 @@ th{
 }
 
 .routine-dates{
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:10px;
+
     width:100%;
     max-width:100%;
+    min-width:0;
 
-    display:grid;
-    grid-template-columns:
-        repeat(2, minmax(0,1fr));
-
-    gap:8px;
+    margin-top:8px;
+    padding:0 4px;
 }
 
 .routine-dates label{
     display:block;
-    min-width:0;
+
+    width:100%;
     max-width:100%;
+    min-width:0;
+
+    margin:0;
+
+    overflow:hidden;
 }
 
-.routine-dates .fecha-rutina
+.routine-dates label > span{
+    display:block;
+
+    margin-bottom:5px;
+
+    text-align:center;
+}
+
+.routine-dates .fecha-rutina{
+    display:block !important;
+
+    box-sizing:border-box;
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0;
+
+    height:38px;
+
+    margin:0 !important;
+    padding:3px 4px;
+
+    font-size:11px;
+    text-align:center;
+}
 
 .semana-dias{
     grid-template-columns:
@@ -1661,7 +1701,7 @@ th{
 
 .semana-cabecera{
     align-items:flex-start;
-}    
+}
 
 }   
 
@@ -1681,7 +1721,48 @@ th{
         height:104px;
     }
 
-}    
+}  
+
+    @media (max-width:430px){
+
+    .progress-dashboard
+    .routine-dates
+    input[type="date"]{
+
+        min-inline-size:0 !important;
+        inline-size:100% !important;
+
+        appearance:none;
+        -webkit-appearance:none;
+
+        font-size:12px !important;
+
+        text-align:center;
+        text-align-last:center;
+    }
+
+    .progress-dashboard
+    .routine-dates
+    input[type="date"]::-webkit-date-and-time-value{
+
+        min-width:0;
+        width:100%;
+
+        text-align:center;
+    }
+
+    .progress-dashboard
+    .routine-dates
+    input[type="date"]::-webkit-calendar-picker-indicator{
+
+        width:16px;
+        height:16px;
+
+        margin:0;
+        padding:0;
+    }
+
+}
     
 @media print{
 
@@ -3026,6 +3107,7 @@ function actualizarPanelPR(){
     actualizarPanelPR;
 
 document.addEventListener("change", e => {
+    registrarHistorial(fila)
 
     const objetivo = e.target;
 
@@ -3041,9 +3123,11 @@ document.addEventListener("change", e => {
 
     const fila = objetivo.closest(".exercise");
 
-   if(fila){
+if(fila){
 
     revisarPR(fila);
+
+    registrarHistorial(fila);
 
 }
 
@@ -3602,53 +3686,94 @@ document.addEventListener(
     
 function updateProgress(){
 
- 
-
     actualizarDiasCompletos();
 
-    const checks =
-        document.querySelectorAll(
-            'input[type="checkbox"]'
+    const botonActivo =
+        document.querySelector(
+            ".tab-btn.active"
         );
 
-    const checked =
-        document.querySelectorAll(
-            'input[type="checkbox"]:checked'
-        );
+    let diaActivo = null;
 
-    document
-    .querySelectorAll(".exercise")
-    .forEach(fila => {
+    if(botonActivo){
 
-        const check =
-            fila.querySelector(
-                'input[type="checkbox"]'
+        const onclick =
+            botonActivo.getAttribute(
+                "onclick"
+            ) || "";
+
+        const coincidencia =
+            onclick.match(
+                /mostrarDia\('([^']+)'\)/
             );
 
-        if(!check){
-            return;
+        if(coincidencia){
+
+            diaActivo =
+                document.getElementById(
+                    coincidencia[1]
+                );
+
         }
 
-        fila.classList.toggle(
-            "completed",
-            check.checked
-        );
+    }
 
-    });
+    if(!diaActivo){
+
+        diaActivo =
+            document.getElementById(
+                "dia1"
+            );
+
+    }
+
+    const checks =
+        diaActivo
+            ? diaActivo.querySelectorAll(
+                '.exercise input[type="checkbox"]'
+            )
+            : [];
+
+    const checked =
+        diaActivo
+            ? diaActivo.querySelectorAll(
+                '.exercise input[type="checkbox"]:checked'
+            )
+            : [];
+
+    document
+        .querySelectorAll(".exercise")
+        .forEach(fila => {
+
+            const check =
+                fila.querySelector(
+                    'input[type="checkbox"]'
+                );
+
+            if(!check){
+                return;
+            }
+
+            fila.classList.toggle(
+                "completed",
+                check.checked
+            );
+
+        });
 
     const contadorEjercicios =
-    document.getElementById(
-        "ejerciciosCompletados"
-    );
+        document.getElementById(
+            "ejerciciosCompletados"
+        );
 
-if(contadorEjercicios){
+    if(contadorEjercicios){
 
-    contadorEjercicios.textContent =
-        checked.length +
-        " / " +
-        checks.length;
+        contadorEjercicios.textContent =
+            checked.length +
+            " / " +
+            checks.length;
 
-}
+    }
 
     const percent =
         checks.length
@@ -3660,45 +3785,54 @@ if(contadorEjercicios){
             : 0;
 
     const donutEjercicios =
-    document.getElementById(
-        "donutEjercicios"
-    );
+        document.getElementById(
+            "donutEjercicios"
+        );
 
-if(donutEjercicios){
+    if(donutEjercicios){
 
-    donutEjercicios.style.setProperty(
-        "--progress",
-        percent
-    );
+        donutEjercicios.style.setProperty(
+            "--progress",
+            percent
+        );
 
-}
+    }
 
-if(
-    typeof actualizarPanelPR
-    === "function"
-){
+    if(
+        typeof actualizarPanelPR
+        === "function"
+    ){
 
-    actualizarPanelPR();
+        actualizarPanelPR();
 
-}
+    }
 
-if(
-    typeof actualizarSelectorHistorial
-    === "function"
-){
+    if(
+        typeof actualizarSelectorHistorial
+        === "function"
+    ){
 
-    actualizarSelectorHistorial();
+        actualizarSelectorHistorial();
 
-}
+    }
 
-if(
-    typeof calcularAvanceRutina
-    === "function"
-){
+    if(
+        typeof actualizarPanelSemanal
+        === "function"
+    ){
 
-    calcularAvanceRutina();
+        actualizarPanelSemanal();
 
-}
+    }
+
+    if(
+        typeof calcularAvanceRutina
+        === "function"
+    ){
+
+        calcularAvanceRutina();
+
+    }
 
 }
 
@@ -3758,17 +3892,40 @@ async function comprobarNuevaSemana(){
     const semanaActual =
         obtenerClaveSemana();
 
-    const semanaGuardada =
-        localStorage.getItem(
-            "semanaActiva"
+    const campoSemana =
+        document.getElementById(
+            "semanaActivaData"
         );
 
+    if(!campoSemana){
+        return false;
+    }
+
+    const semanaGuardada =
+        campoSemana.value ||
+        localStorage.getItem(
+            "semanaActiva"
+        ) ||
+        "";
+
     if(!semanaGuardada){
+
+        campoSemana.value =
+            semanaActual;
 
         localStorage.setItem(
             "semanaActiva",
             semanaActual
         );
+
+        if(
+            typeof window.guardarEnFirebase
+            === "function"
+        ){
+
+            await window.guardarEnFirebase();
+
+        }
 
         return false;
 
@@ -3779,7 +3936,31 @@ async function comprobarNuevaSemana(){
         semanaActual
     ){
 
+        campoSemana.value =
+            semanaActual;
+
+        localStorage.setItem(
+            "semanaActiva",
+            semanaActual
+        );
+
         return false;
+
+    }
+
+    /*
+     * Guardar la semana anterior
+     * antes de desmarcar los ejercicios.
+     */
+
+    if(
+        typeof registrarResumenSemana
+        === "function"
+    ){
+
+        registrarResumenSemana(
+            semanaGuardada
+        );
 
     }
 
@@ -3801,6 +3982,9 @@ async function comprobarNuevaSemana(){
             }
 
         });
+
+    campoSemana.value =
+        semanaActual;
 
     localStorage.setItem(
         "semanaActiva",
@@ -3827,7 +4011,8 @@ async function comprobarNuevaSemana(){
 
     console.log(
         "Nueva semana detectada. " +
-        "Los ejercicios completados fueron reiniciados."
+        "Se guardó el resumen anterior " +
+        "y se reiniciaron los ejercicios."
     );
 
     return true;
@@ -4252,7 +4437,16 @@ const historial =
     campoHistorial
         ? campoHistorial.value
         : "";
+const campoResumen =
+    document.getElementById(
+        "resumenSemanalData"
+    );
 
+const resumenSemanal =
+    campoResumen
+        ? campoResumen.value
+        : "";
+    
     localStorage.clear();
 
  if(prs){
@@ -4267,6 +4461,15 @@ if(historial){
     localStorage.setItem(
         "historialData",
         historial
+    );
+
+}
+
+if(resumenSemanal){
+
+    localStorage.setItem(
+        "resumenSemanalData",
+        resumenSemanal
     );
 
 }
@@ -4287,8 +4490,12 @@ if(historial){
                 ),
                 {
                     inputs: {
+  inputs: {
+
     ...(prs
-        ? { prData: prs }
+        ? {
+            prData: prs
+        }
         : {}
     ),
 
@@ -4298,7 +4505,16 @@ if(historial){
                 historial
         }
         : {}
+    ),
+
+    ...(resumenSemanal
+        ? {
+            resumenSemanalData:
+                resumenSemanal
+        }
+        : {}
     )
+
 },
                     actualizado:
                         new Date().toISOString()
@@ -4403,13 +4619,24 @@ window.mostrarDia = function(id){
             `[onclick="mostrarDia('${id}')"]`
         );
 
-    if(boton){
+   if(boton){
 
-        boton.classList.add(
-            "active"
-        );
+    boton.classList.add(
+        "active"
+    );
 
-    }
+}
+
+if(
+    typeof window.updateProgress
+    === "function"
+){
+
+    window.updateProgress();
+
+}
+
+};
 
 };
 
@@ -4744,13 +4971,22 @@ window.mostrarDia = function(id){
             `[onclick="mostrarDia('${id}')"]`
         );
 
-    if(boton){
+  if(boton){
 
-        boton.classList.add(
-            "active"
-        );
+    boton.classList.add(
+        "active"
+    );
 
-    }
+}
+
+if(
+    typeof window.updateProgress
+    === "function"
+){
+
+    window.updateProgress();
+
+}
 
 };
 
