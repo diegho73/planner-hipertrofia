@@ -4496,39 +4496,20 @@ if(resumenSemanal){
         ){
 
             await window.setDoc(
-                window.doc(
-                    window.db,
-                    "planner",
-                    "principal"
-                ),
-                {
-                    inputs: {
-  inputs: {
-
-    ...(prs
-        ? {
-            prData: prs
-        }
-        : {}
+    window.doc(
+        window.db,
+        "planner",
+        "principal"
     ),
-
-    ...(historial
-        ? {
-            historialData:
-                historial
-        }
-        : {}
-    ),
-
-    ...(resumenSemanal
-        ? {
-            resumenSemanalData:
-                resumenSemanal
-        }
-        : {}
-    )
-
-},
+    {
+        inputs: {
+            ...(prs ? { prData: prs } : {}),
+            ...(historial ? { historialData: historial } : {}),
+            ...(resumenSemanal ? { resumenSemanalData: resumenSemanal } : {})
+        },
+        actualizado: new Date().toISOString()
+    }
+);
                     actualizado:
                         new Date().toISOString()
                 }
