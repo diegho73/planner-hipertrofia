@@ -4496,26 +4496,18 @@ if(resumenSemanal){
 
             await window.setDoc(
     window.doc(
-        window.db,
-        "planner",
-        "principal"
-    ),
+        window.db, "planner", "principal"),
     {
-        inputs: {
-            ...(prs ? { prData: prs } : {}),
-            ...(historial ? { historialData: historial } : {}),
-            ...(resumenSemanal ? { resumenSemanalData: resumenSemanal } : {})
-        },
-        actualizado: new Date().toISOString()
-    }
-);
-                    actualizado:
-                        new Date().toISOString()
-                }
-            );
-
+            inputs: {
+               ...(prs ? { prData: prs } : {}),
+               ...(historial ? { historialData: historial } : {}),
+               ...(resumenSemanal ? { resumenSemanalData: resumenSemanal } :
+{})
+            },
+            actualizado: new Date().toISOString()
         }
-
+    );
+}
         alert(
             "Los datos fueron borrados correctamente."
         );
