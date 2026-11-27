@@ -816,7 +816,7 @@ th{
 
 .dark #panelPR .pr-item{
     border-bottom-color:#444;
-}
+} 
 
     /* ===== RESUMEN SEMANAL ===== */
 
@@ -1879,6 +1879,43 @@ body.dark.modo-entrenar .progreso-entrenar{
     text-decoration:none;
     white-space:nowrap;
 }  
+
+.ejercicio-con-referencia {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.ejercicio-con-referencia > .exercise-select,
+.ejercicio-con-referencia > label {
+    flex: 1;
+    min-width: 0;
+}
+
+.referencia-ejercicio {
+    display: grid;
+    place-items: center;
+    flex: 0 0 30px;
+    min-height: 36px;
+    border: 1px solid #aab6cc;
+    border-radius: 7px;
+    background: linear-gradient(#fff, #e8edf7);
+    box-shadow: 0 2px 0 #8a98ae;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.dark .referencia-ejercicio {
+    background: linear-gradient(#333a46, #222832);
+    border-color: #4e5868;
+    box-shadow: 0 2px 0 #11161e;
+}
+
+.referencia-ejercicio:focus-visible {
+    outline: 2px solid #7fb3ff;
+    outline-offset: 2px;
+}    
     
 </style>
 </head>
@@ -2308,16 +2345,14 @@ body.dark.modo-entrenar .progreso-entrenar{
         </div>
     </div>
     
-  <div class="exercise-data exercise-data-con-imagen">
-    <input class="weight" placeholder="Peso">
-
-    <a class="exercise-image-link"
+ <div class="ejercicio-con-referencia">
+    <label>Press banca</label>
+    <a class="referencia-ejercicio"
        href="./img/ejercicios/press-banca.webp"
        target="_blank"
        rel="noopener"
-       aria-label="Ver imagen de Press banca (abre en otra pestaña)">
-        🖼 Ver
-    </a>
+       aria-label="Ver imagen de Press banca (abre en otra pestaña)"
+       title="Ver imagen de Press banca">🖼</a>
 </div>
 
 
