@@ -1793,6 +1793,75 @@ input[type="date"]::-webkit-date-and-time-value{
     }
 }
 
+/* ===== MODO ENTRENAR ===== */
+
+.planner-vistas{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin:10px 0 16px;
+}
+
+.planner-vistas .tab-btn{
+    min-height:44px;
+    min-width:0;
+    margin:0;
+    padding:8px 14px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.planner-vistas .tab-btn:focus-visible{
+    outline:2px solid #4777cc;
+    outline-offset:3px;
+}
+
+.progreso-entrenar{
+    display:none;
+}
+
+body.modo-entrenar .personal-panel,
+body.modo-entrenar .progress-dashboard,
+body.modo-entrenar #panelPR,
+body.modo-entrenar #panelSemanal,
+body.modo-entrenar #panelHistorial,
+body.modo-entrenar .actions button[onclick="resetData()"]{
+    display:none;
+}
+
+body.modo-entrenar .actions{
+    margin:8px 0 10px;
+}
+
+body.modo-entrenar .progreso-entrenar{
+    display:block;
+    margin:0 0 14px;
+    padding:8px 12px;
+    border-radius:8px;
+    background:#e8edf7;
+    color:#0b2c6b;
+    text-align:center;
+    font-size:14px;
+    font-weight:700;
+}
+
+body.dark.modo-entrenar .progreso-entrenar{
+    background:#222832;
+    color:#e7ecf5;
+}
+
+@media (max-width:768px){
+    .planner-vistas .tab-btn{
+        flex:1;
+    }
+
+    body.modo-entrenar #darkModeBtn{
+        width:auto;
+        min-width:0;
+        margin:0;
+    }
+}
+    
 </style>
 </head>
 
@@ -1821,6 +1890,17 @@ input[type="date"]::-webkit-date-and-time-value{
     </button>
 
 </div>
+
+<nav class="planner-vistas" aria-label="Vista del planner">
+    <button type="button" id="vistaEntrenarBtn" class="tab-btn" aria-pressed="false">
+        Entrenar
+    </button>
+    <button type="button" id="vistaResumenBtn" class="tab-btn active" aria-pressed="true">
+        Ver resumen
+    </button>
+</nav>
+
+<p id="progresoEntrenar" class="progreso-entrenar" aria-live="polite"></p>    
 
 <details class="personal-panel">
 
@@ -4674,6 +4754,78 @@ function mostrarReemplazos(nombre){
     );
 
 }
+
+ /* ===== MODO ENTRENAR ===== */
+
+(() => {
+    const entrenar = document.getElementById("vistaEntrenarBtn");
+    const resumen = document.getElementById("vistaResumenBtn");
+    const salida = document.getElementById("progresoEntrenar");
+    const contador = document.getElementById("ejerciciosCompletados");
+
+    if(!entrenar || !resumen || !salida || !contador){
+        return;
+    }
+
+    const claveVista = "plannerVista";
+
+    function actualizarProgresoEntrenar(){
+        const cantidad = contador.textContent.trim().replace(/\s+/g, " ");
+        const texto = cantidad ? cantidad + " completados" : "";
+
+        if(salida.textContent !== texto){
+            salida.textContent = texto;
+        }
+    }
+
+    function aplicarVista(vista, guardar){
+        const modoEntrenar = vista === "entrenar";
+
+        document.body.classList.toggle("modo-entrenar", modoEntrenar);
+        entrenar.classList.toggle("active", modoEntrenar);
+        resumen.classList.toggle("active", !modoEntrenar);
+        entrenar.setAttribute("aria-pressed", String(modoEntrenar));
+        resumen.setAttribute("aria-pressed", String(!modoEntrenar));
+
+        if(modoEntrenar){
+            actualizarProgresoEntrenar();
+        }
+
+        if(guardar){
+            try{
+                localStorage.setItem(claveVista, vista);
+            }catch{
+                // El cambio de vista sigue funcionando sin almacenamiento.
+            }
+        }
+    }
+
+    entrenar.addEventListener("click", () => aplicarVista("entrenar", true));
+    resumen.addEventListener("click", () => aplicarVista("resumen", true));
+
+    const observador = new MutationObserver(actualizarProgresoEntrenar);
+    observador.observe(contador, {
+        childList:true,
+        characterData:true,
+        subtree:true
+    });
+
+    let vistaInicial = window.matchMedia("(max-width:768px)").matches
+        ? "entrenar"
+        : "resumen";
+
+    try{
+        const vistaGuardada = localStorage.getItem(claveVista);
+
+        if(vistaGuardada === "entrenar" || vistaGuardada === "resumen"){
+            vistaInicial = vistaGuardada;
+        }
+    }catch{
+        // Si no se puede leer la preferencia, se usa la vista inicial.
+    }
+
+    aplicarVista(vistaInicial, false);
+})();   
 
 </script>  
 
