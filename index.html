@@ -1861,6 +1861,24 @@ body.dark.modo-entrenar .progreso-entrenar{
         margin:0;
     }
 }
+
+  .workout-day .exercise-data-con-imagen{
+    flex-direction:column;
+    gap:4px;
+}
+
+.exercise-image-link{
+    display:block;
+    padding:5px 4px;
+    border-radius:6px;
+    background:#234ca0;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    text-align:center;
+    text-decoration:none;
+    white-space:nowrap;
+}  
     
 </style>
 </head>
@@ -2290,16 +2308,18 @@ body.dark.modo-entrenar .progreso-entrenar{
         </div>
     </div>
     
-    <div class="exercise">
-        <input type="checkbox">
-        <label>Press banca</label>
+  <div class="exercise-data exercise-data-con-imagen">
+    <input class="weight" placeholder="Peso">
 
-        <div class="exercise-data">
-            <input
-                class="weight"
-                placeholder="Peso">
-        </div>
-    </div>
+    <a class="exercise-image-link"
+       href="./img/ejercicios/press-banca.webp"
+       target="_blank"
+       rel="noopener"
+       aria-label="Ver imagen de Press banca (abre en otra pestaña)">
+        🖼 Ver
+    </a>
+</div>
+
 
     <div class="exercise">
         <input type="checkbox">
